@@ -1,0 +1,12 @@
+[package]
+name = "appium-client"
+description = "Client for Appium Server, for automated mobile app testing."
+version = "0.1.0"
+edition = "2021"
+authors = ["multicatch <cezaryre@gmail.com>"]
+license = "GPL-3.0-or-later"
+homepage = "https://github.com/multicatch/appium-client"
+repository = "https://github.com/multicatch/appium-client"
+documentation = "https://multicatch.github.io/appium-client/"
+
+[dependencies]
