@@ -18,9 +18,15 @@ impl AndroidCapabilities {
     }
 }
 
-impl Into<Capabilities> for AndroidCapabilities {
-    fn into(self) -> Capabilities {
-        self.inner
+impl Default for AndroidCapabilities {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl From<AndroidCapabilities> for Capabilities {
+    fn from(value: AndroidCapabilities) -> Self {
+        value.inner
     }
 }
 

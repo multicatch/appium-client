@@ -1,7 +1,8 @@
 use appium_client::ClientBuilder;
 use appium_client::capabilities::*;
 use appium_client::commands::AppiumBy;
-use appium_client::find::{AppiumFindBy, AppiumWaitFor};
+use appium_client::find::AppiumFindBy;
+use appium_client::wait::AppiumWait;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -19,8 +20,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("{value}");
 
     let result = client
-        .wait()
-        .for_appium_element(AppiumBy::uiautomator("new UiSelector().className(\"android.widget.ImageView\");"))
+        .appium_wait()
+        .for_element(AppiumBy::uiautomator("new UiSelector().className(\"android.widget.ImageView\");"))
         .await?;
 
     result.click().await?;
