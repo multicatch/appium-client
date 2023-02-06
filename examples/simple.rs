@@ -1,3 +1,4 @@
+use std::time::Duration;
 use appium_client::ClientBuilder;
 use appium_client::capabilities::*;
 use appium_client::find::{AppiumFind, By};
@@ -18,16 +19,26 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let value = client.source().await?;
     println!("{value}");
 
-    let result = client
+    let more_button = client
         .appium_wait()
         .for_element(By::uiautomator("new UiSelector().className(\"android.widget.ImageView\");"))
         .await?;
 
-    result.click().await?;
+    more_button.click().await?;
 
-    let result = client
+    let menu_elements = client
         .find_all_by(By::uiautomator("new UiSelector().className(\"android.widget.LinearLayout\");"))
         .await?;
-    result.first().unwrap().click().await?;
+    menu_elements.first().unwrap().click().await?;
+
+    let element = client
+        .appium_wait()
+        .at_most(Duration::from_secs(20))
+        .check_every(Duration::from_millis(500))
+        .for_element(By::class_name("android.widget.LinearLayout"))
+        .await?;
+
+    element.click().await?;
+
     Ok(())
 }
