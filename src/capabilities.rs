@@ -2,6 +2,9 @@ use std::ops::{Deref, DerefMut};
 use fantoccini::wd::Capabilities;
 use serde_json::Value;
 
+///
+/// Android capabilities
+///
 #[derive(Clone, Eq, PartialEq, Debug)]
 pub struct AndroidCapabilities {
     inner: Capabilities,
@@ -44,6 +47,76 @@ impl DerefMut for AndroidCapabilities {
     }
 }
 
+impl AppiumCapability for AndroidCapabilities {}
+
+impl UdidCapable for AndroidCapabilities {}
+
+impl AppCapable for AndroidCapabilities {}
+
+impl AppiumSettingsCapable for AndroidCapabilities {}
+
+impl ActivityCapable for AndroidCapabilities {}
+
+
+///
+/// iOS capabilities
+///
+#[derive(Clone, Eq, PartialEq, Debug)]
+pub struct IOSCapabilities {
+    inner: Capabilities,
+}
+
+impl IOSCapabilities {
+    pub fn new() -> IOSCapabilities {
+        let mut inner = Capabilities::new();
+        inner.insert("platformName".to_string(), Value::String("iOS".to_string()));
+
+        IOSCapabilities {
+            inner
+        }
+    }
+}
+
+impl Default for IOSCapabilities {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl From<IOSCapabilities> for Capabilities {
+    fn from(value: IOSCapabilities) -> Self {
+        value.inner
+    }
+}
+
+impl Deref for IOSCapabilities {
+    type Target = Capabilities;
+
+    fn deref(&self) -> &Self::Target {
+        &self.inner
+    }
+}
+
+impl DerefMut for IOSCapabilities {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.inner
+    }
+}
+
+impl AppiumCapability for IOSCapabilities {}
+
+impl UdidCapable for IOSCapabilities {}
+
+impl AppCapable for IOSCapabilities {}
+
+impl AppiumSettingsCapable for IOSCapabilities {}
+
+impl ActivityCapable for IOSCapabilities {}
+
+
+///
+/// Extensions to easily define capabilities for Appium driver
+///
 pub trait AppiumCapability where Self: DerefMut<Target=Capabilities> {
     fn automation_name(&mut self, automation_name: &str) {
         self.set_str("automationName", automation_name);
@@ -122,13 +195,3 @@ pub trait AppiumSettingsCapable: AppiumCapability {
         self.insert(format!("settings[{name}]"), value);
     }
 }
-
-impl AppiumCapability for AndroidCapabilities {}
-
-impl UdidCapable for AndroidCapabilities {}
-
-impl AppCapable for AndroidCapabilities {}
-
-impl AppiumSettingsCapable for AndroidCapabilities {}
-
-impl ActivityCapable for AndroidCapabilities {}
