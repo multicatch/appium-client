@@ -68,7 +68,7 @@ let element = client
 element.click().await?;
 ```
 
-4. To locate multiple elements, use `find_all_by`.
+4. To locate multiple elements, use `find_all_by` or `.appium_wait().for_elements(..)`.
 ```rust
 // you need these to use Appium-enhanced wait with fantoccini's Client
 use appium_client::find::{AppiumFind, By};
@@ -76,7 +76,7 @@ use appium_client::wait::AppiumWait;
 
 let result = client
     .appium_wait()
-    .find_all_by(By::class_name("android.widget.LinearLayout"))
+    .for_elements(By::class_name("android.widget.LinearLayout"))
     .await?;
 
 result.first().unwrap().click().await?;

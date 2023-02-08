@@ -64,7 +64,7 @@ impl By {
         By::AndroidViewMatcher(query.to_string())
     }
 
-    /// Locate an element by its [view tag](https://developer.android.com/reference/android/support/test/espresso/matcher/ViewMatchers.html#withTagValue(org.hamcrest.Matcher%3Cjava.lang.Object%3E). (Espresso only)
+    /// Locate an element by its [view tag](https://developer.android.com/reference/android/support/test/espresso/matcher/ViewMatchers.html#withTagValue%28org.hamcrest.Matcher%3Cjava.lang.Object%3E). (Espresso only)
     pub fn android_view_tag(query: &str) -> By {
         By::AndroidViewTag(query.to_string())
     }
