@@ -38,7 +38,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .for_element(By::class_name("android.widget.LinearLayout"))
         .await?;
 
-    element.click().await?;
+    element
+        .find_by(By::class_name("android.widget.ImageButton"))
+        .await?
+        .click()
+        .await?;
 
     Ok(())
 }

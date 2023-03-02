@@ -175,3 +175,37 @@ impl AppiumFind for Client {
         Ok(elements)
     }
 }
+
+#[async_trait]
+impl AppiumFind for Element {
+    async fn find_by(&self, search: By) -> Result<Element, CmdError> {
+        let client = self.clone().client();
+        let element_ref = self.element_id();
+        let value = client.issue_cmd(AppiumCommand::FindElementWithContext(search, element_ref.to_string())).await?;
+        let map: HashMap<String, String> = serde_json::from_value(value.clone())?;
+
+        map.get("ELEMENT")
+            .ok_or_else(|| CmdError::NotW3C(value))
+            .map(|element| Element::from_element_id(
+                client,
+                ElementRef::from(element.clone())
+            ))
+    }
+
+    async fn find_all_by(&self, search: By) -> Result<Vec<Element>, CmdError> {
+        let client = self.clone().client();
+        let element_ref = self.element_id();
+        let value = client.issue_cmd(AppiumCommand::FindElementsWithContext(search, element_ref.to_string())).await?;
+        let result: Vec<HashMap<String, String>> = serde_json::from_value(value)?;
+
+        let elements = result.into_iter()
+            .filter_map(|map| map.get("ELEMENT").cloned())
+            .map(|element| Element::from_element_id(
+                client.clone(),
+                ElementRef::from(element)
+            ))
+            .collect();
+
+        Ok(elements)
+    }
+}
