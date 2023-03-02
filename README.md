@@ -82,5 +82,20 @@ let result = client
 result.first().unwrap().click().await?;
 ```
 
+5. You can also perform search inside elements you found.
+```rust
+// you need this to use Appium locators with fantoccini's Client
+use appium_client::find::{AppiumFind, By};
+
+let element = client
+    .find_by(By::accessibility_id("Click this"))
+    .await?;
+
+// now let's find a child of element
+let image_child = element
+    .find_by(By::class_name("android.widget.ImageButton"))
+    .await?;
+```
+
 [See example.](examples/simple.rs)
 
