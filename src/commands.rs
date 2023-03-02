@@ -24,11 +24,11 @@ impl WebDriverCompatibleCommand for AppiumCommand {
                 base.join("elements"),
             AppiumCommand::FindElementWithContext(.., context) =>
                 base.join("element")
-                    .and_then(|url| url.join(&context))
+                    .and_then(|url| url.join(context))
                     .and_then(|url| url.join("element")),
             AppiumCommand::FindElementsWithContext(.., context) =>
                 base.join("element")
-                    .and_then(|url| url.join(&context))
+                    .and_then(|url| url.join(context))
                     .and_then(|url| url.join("elements")),
         }
     }
