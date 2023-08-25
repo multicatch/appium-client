@@ -284,4 +284,8 @@ pub trait XCUITestAppCompatible: AppiumCapability {
     fn app_install_strategy(&mut self, value: &str) {
         self.set_str("appInstallStrategy", value);
     }
+
+    fn auto_accept_alerts(&mut self, value: bool) {
+        self.set_bool("autoAcceptAlerts", value);
+    }
 }
