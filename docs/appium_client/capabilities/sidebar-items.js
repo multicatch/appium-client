@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["AndroidCapabilities","Android capabilities"],["IOSCapabilities","iOS capabilities"]],"trait":[["AppCapable",""],["AppiumCapability","Extensions to easily define capabilities for Appium driver"],["AppiumSettingsCapable",""],["UdidCapable",""],["UiAutomator2AppCompatible",""],["XCUITestAppCompatible",""]]};
+window.SIDEBAR_ITEMS = {"struct":["AndroidCapabilities","IOSCapabilities"],"trait":["AppCapable","AppiumCapability","AppiumSettingsCapable","UdidCapable","UiAutomator2AppCompatible","XCUITestAppCompatible"]};

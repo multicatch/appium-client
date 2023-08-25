@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Wait",""]],"trait":[["AppiumWait",""]]};
+window.SIDEBAR_ITEMS = {"struct":["Wait"],"trait":["AppiumWait"]};

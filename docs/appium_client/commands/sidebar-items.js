@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["AppiumCommand",""]]};
+window.SIDEBAR_ITEMS = {"enum":["AppiumCommand"]};
