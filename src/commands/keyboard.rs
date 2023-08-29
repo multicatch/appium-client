@@ -7,6 +7,14 @@ use crate::commands::AppiumCommand;
 
 #[async_trait]
 pub trait HidesKeyboard: AppiumClientTrait {
+    /// Tries to hide keyboard using default system mechanism.
+    ///
+    /// Note: On some devices, it defaults to "swipe" or "back" button.
+    /// It unfortunately can cause side effects like going to the previous screen,
+    /// or not hiding the keyboard at all in some apps.
+    /// On iOS, the keyboard might not hide at all.
+    ///
+    /// In such cases, consider implementing your own "hide keyboard" with swipe or tap on screen.
     async fn hide_keyboard(&self) -> Result<(), CmdError> {
         self.issue_cmd(AppiumCommand::Custom(
             Method::POST,
