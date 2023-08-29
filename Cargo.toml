@@ -9,8 +9,13 @@ homepage = "https://github.com/multicatch/appium-client"
 repository = "https://github.com/multicatch/appium-client"
 documentation = "https://multicatch.github.io/appium-client/appium_client/"
 
+[features]
+default = ["native-tls"]
+native-tls = ["hyper-tls", "fantoccini/native-tls"]
+rustls-tls = ["hyper-rustls", "fantoccini/rustls-tls"]
+
 [dependencies]
-fantoccini = "0.19.3"
+fantoccini = { version = "0.19.3", features = [] }
 tokio = { version = "1.25.0", features = ["full"] }
 serde = "1.0.152"
 serde_derive = "1.0.152"
@@ -18,3 +23,6 @@ serde_json = "1.0.91"
 url = "2.3.1"
 http = "0.2.8"
 async-trait = "0.1.64"
+hyper = { version = "0.14", features = ["stream", "client", "http1"] }
+hyper-rustls = { version = "0.23.0", optional = true }
+hyper-tls = { version = "0.5.0", optional = true }

@@ -1,123 +1,21 @@
+pub mod ios;
+pub mod automation;
+pub mod android;
+
 use std::ops::{Deref, DerefMut};
 use std::time::Duration;
 use fantoccini::wd::Capabilities;
 use serde_json::{Number, Value};
 
-///
-/// Android capabilities
-///
-#[derive(Clone, Eq, PartialEq, Debug)]
-pub struct AndroidCapabilities {
-    inner: Capabilities,
-}
-
-impl AndroidCapabilities {
-    pub fn new() -> AndroidCapabilities {
-        let mut inner = Capabilities::new();
-        inner.insert("platformName".to_string(), Value::String("android".to_string()));
-
-        AndroidCapabilities {
-            inner
-        }
-    }
-}
-
-impl Default for AndroidCapabilities {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl From<AndroidCapabilities> for Capabilities {
-    fn from(value: AndroidCapabilities) -> Self {
-        value.inner
-    }
-}
-
-impl Deref for AndroidCapabilities {
-    type Target = Capabilities;
-
-    fn deref(&self) -> &Self::Target {
-        &self.inner
-    }
-}
-
-impl DerefMut for AndroidCapabilities {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.inner
-    }
-}
-
-impl AppiumCapability for AndroidCapabilities {}
-
-impl UdidCapable for AndroidCapabilities {}
-
-impl AppCapable for AndroidCapabilities {}
-
-impl AppiumSettingsCapable for AndroidCapabilities {}
-
-impl UiAutomator2AppCompatible for AndroidCapabilities {}
-
-
-///
-/// iOS capabilities
-///
-#[derive(Clone, Eq, PartialEq, Debug)]
-pub struct IOSCapabilities {
-    inner: Capabilities,
-}
-
-impl IOSCapabilities {
-    pub fn new() -> IOSCapabilities {
-        let mut inner = Capabilities::new();
-        inner.insert("platformName".to_string(), Value::String("iOS".to_string()));
-
-        IOSCapabilities {
-            inner
-        }
-    }
-}
-
-impl Default for IOSCapabilities {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl From<IOSCapabilities> for Capabilities {
-    fn from(value: IOSCapabilities) -> Self {
-        value.inner
-    }
-}
-
-impl Deref for IOSCapabilities {
-    type Target = Capabilities;
-
-    fn deref(&self) -> &Self::Target {
-        &self.inner
-    }
-}
-
-impl DerefMut for IOSCapabilities {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.inner
-    }
-}
-
-impl AppiumCapability for IOSCapabilities {}
-
-impl UdidCapable for IOSCapabilities {}
-
-impl AppCapable for IOSCapabilities {}
-
-impl AppiumSettingsCapable for IOSCapabilities {}
-
-impl XCUITestAppCompatible for IOSCapabilities {}
-
-///
 /// Extensions to easily define capabilities for Appium driver
-///
-pub trait AppiumCapability where Self: DerefMut<Target=Capabilities> {
+pub trait AppiumCapability
+    where Self: Deref<Target=Capabilities>,
+          Self: DerefMut<Target=Capabilities> {
+
+    /// Set the automation driver to use.
+    /// 
+    /// Appium usually autoselects the driver based on platform, but you choose the preferred driver.
+    /// See [automation] for possible values.
     fn automation_name(&mut self, automation_name: &str) {
         self.set_str("automationName", automation_name);
     }
@@ -176,7 +74,6 @@ pub trait AppCapable: AppiumCapability {
 }
 
 pub trait UiAutomator2AppCompatible: AppiumCapability {
-
     fn app_activity(&mut self, activity: &str) {
         self.set_str("appActivity", activity);
     }
@@ -220,7 +117,7 @@ pub trait UiAutomator2AppCompatible: AppiumCapability {
     fn intent_action(&mut self, value: &str) {
         self.set_str("intentAction", value);
     }
-    
+
     fn intent_flags(&mut self, value: &str) {
         self.set_str("intentFlags", value);
     }

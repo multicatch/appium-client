@@ -1,6 +1,8 @@
 use std::time::Duration;
 use appium_client::ClientBuilder;
 use appium_client::capabilities::*;
+use appium_client::capabilities::android::AndroidCapabilities;
+use appium_client::commands::rotation::SupportsRotation;
 use appium_client::find::{AppiumFind, By};
 use appium_client::wait::AppiumWait;
 
@@ -18,14 +20,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     capabilities.insert("appium:fullReset".to_string(), serde_json::Value::Bool(true));
 
     // To start automation, you need to build a client.
-    let client = ClientBuilder::native()
-        .capabilities(capabilities.into())
+    let client = ClientBuilder::native(capabilities)
         .connect("http://localhost:4723/wd/hub/")
         .await?;
 
     // The app should automatically start, let's print the DOM of current app screen.
     let value = client.source().await?;
     println!("{value}");
+
+    // Screen orientation is another Appium perk
+    let orientation = client.orientation().await?;
+    println!("Screen orientation: {orientation}");
 
     // Now we try to locate a button using UiAutomator API.
     // Notice that the program will wait until the button appears on screen (but maximum of 30 seconds).

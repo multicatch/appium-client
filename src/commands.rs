@@ -1,5 +1,8 @@
+pub mod rotation;
+
 use fantoccini::wd::WebDriverCompatibleCommand;
 use http::Method;
+use serde_json::Value;
 use crate::find::By;
 
 #[derive(Debug, PartialEq)]
@@ -8,6 +11,7 @@ pub enum AppiumCommand {
     FindElementWithContext(By, String),
     FindElements(By),
     FindElementsWithContext(By, String),
+    Custom(Method, String, Option<Value>),
 }
 
 impl WebDriverCompatibleCommand for AppiumCommand {
@@ -30,6 +34,8 @@ impl WebDriverCompatibleCommand for AppiumCommand {
                 base.join("element")
                     .and_then(|url| url.join(context))
                     .and_then(|url| url.join("elements")),
+            AppiumCommand::Custom(_, command, ..) =>
+                base.join(command),
         }
     }
 
@@ -43,6 +49,13 @@ impl WebDriverCompatibleCommand for AppiumCommand {
                 let body = Some(serde_json::to_string(&by).unwrap());
 
                 (method, body)
+            },
+
+            AppiumCommand::Custom(method, .., value) => {
+                let body = value.clone()
+                    .map(|v| v.to_string());
+
+                (method.clone(), body)
             }
         }
     }
