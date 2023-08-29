@@ -4,9 +4,7 @@ use fantoccini::error::CmdError;
 use http::Method;
 use serde::Deserialize;
 use serde_json::{json, Map, Value};
-use crate::capabilities::android::AndroidCapabilities;
-use crate::capabilities::ios::IOSCapabilities;
-use crate::{AppiumClient, Client};
+use crate::{AndroidClient, AppiumClientTrait, IOSClient};
 use crate::commands::AppiumCommand;
 use crate::commands::rotation::Orientation::{Landscape, Portrait};
 
@@ -47,7 +45,7 @@ impl DeviceRotation {
 }
 
 #[async_trait]
-pub trait SupportsRotation : AppiumClient {
+pub trait SupportsRotation : AppiumClientTrait {
     async fn orientation(&self) -> Result<Orientation, CmdError> {
         let value = self.issue_cmd(AppiumCommand::Custom(
             Method::GET, "orientation".to_string(), None
@@ -91,7 +89,7 @@ pub trait SupportsRotation : AppiumClient {
 }
 
 #[async_trait]
-impl SupportsRotation for Client<AndroidCapabilities> {}
+impl SupportsRotation for AndroidClient {}
 
 #[async_trait]
-impl SupportsRotation for Client<IOSCapabilities> {}
+impl SupportsRotation for IOSClient {}

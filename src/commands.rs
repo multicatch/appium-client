@@ -1,4 +1,5 @@
 pub mod rotation;
+pub mod keyboard;
 
 use fantoccini::wd::WebDriverCompatibleCommand;
 use http::Method;

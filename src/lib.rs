@@ -16,7 +16,9 @@ use std::marker::PhantomData;
 use std::ops::{Deref, DerefMut};
 use fantoccini::error;
 use hyper::client::connect;
+use crate::capabilities::android::AndroidCapabilities;
 use crate::capabilities::AppiumCapability;
+use crate::capabilities::ios::IOSCapabilities;
 
 pub mod capabilities;
 pub mod commands;
@@ -79,9 +81,12 @@ pub struct Client<Caps>
     caps: PhantomData<Caps>,
 }
 
-pub trait AppiumClient: DerefMut<Target=fantoccini::Client> {}
+pub trait AppiumClientTrait: DerefMut<Target=fantoccini::Client> {}
 
-impl<Caps> AppiumClient for Client<Caps>
+pub type AndroidClient = Client<AndroidCapabilities>;
+pub type IOSClient = Client<IOSCapabilities>;
+
+impl<Caps> AppiumClientTrait for Client<Caps>
     where Caps: AppiumCapability {}
 
 impl<Caps> Deref for Client<Caps>
