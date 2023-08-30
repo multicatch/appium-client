@@ -4,7 +4,7 @@ use serde_json::Value;
 use crate::capabilities::{AppCapable, AppiumCapability, AppiumSettingsCapable, UdidCapable, UiAutomator2AppCompatible};
 use crate::capabilities::automation::{ANDROID_UIAUTOMATOR2, ESPRESSO};
 
-/// UiAutomator2 capabilities
+/// Android capabilities
 #[derive(Clone, Eq, PartialEq, Debug)]
 pub struct AndroidCapabilities {
     inner: Capabilities,

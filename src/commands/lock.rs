@@ -26,7 +26,7 @@ pub trait UnlocksDevice: AppiumClientTrait {
     /// Unlocks the device.
     ///
     /// To unlock a screen with code or pattern, use "unlockType" and "unlockKey" capabilities.
-    /// See https://github.com/appium/appium-android-driver/blob/master/docs/UNLOCK.md.
+    /// See <https://github.com/appium/appium-android-driver/blob/master/docs/UNLOCK.md>.
     async fn unlock_device(&self) -> Result<(), CmdError> {
         self.issue_cmd(AppiumCommand::Custom(
             Method::POST,
