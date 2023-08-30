@@ -3,7 +3,6 @@ use appium_client::ClientBuilder;
 use appium_client::capabilities::*;
 use appium_client::capabilities::android::AndroidCapabilities;
 use appium_client::commands::keyboard::HidesKeyboard;
-use appium_client::commands::lock::LocksDevice;
 use appium_client::commands::rotation::SupportsRotation;
 use appium_client::find::{AppiumFind, By};
 use appium_client::wait::AppiumWait;

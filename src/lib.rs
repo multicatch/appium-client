@@ -14,11 +14,16 @@
 
 use std::marker::PhantomData;
 use std::ops::{Deref, DerefMut};
+use std::sync::Arc;
 use fantoccini::error;
+use http::Method;
 use hyper::client::connect;
+use log::error;
+use tokio::spawn;
 use crate::capabilities::android::AndroidCapabilities;
 use crate::capabilities::AppiumCapability;
 use crate::capabilities::ios::IOSCapabilities;
+use crate::commands::AppiumCommand;
 
 pub mod capabilities;
 pub mod commands;
@@ -104,5 +109,28 @@ impl<Caps> DerefMut for Client<Caps>
 {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.inner
+    }
+}
+
+impl<Caps> Drop for Client<Caps>
+    where Caps: AppiumCapability {
+    fn drop(&mut self) {
+        let client = Arc::new(self.inner.clone());
+        spawn(async move {
+            let client = client.deref().clone();
+            // end session
+            if let Err(e) = client.issue_cmd(AppiumCommand::Custom(
+                Method::DELETE,
+                "".to_string(),
+                None
+            )).await {
+                error!("Error while ending session: {e}");
+            }
+
+            // clean up fantoccini
+            if let Err(e) = client.close().await {
+                error!("Error while issuing shutdown: {e}");
+            };
+        });
     }
 }
