@@ -3,6 +3,7 @@ pub mod keyboard;
 pub mod lock;
 pub mod contexts;
 pub mod location;
+pub mod time;
 
 use fantoccini::wd::WebDriverCompatibleCommand;
 use http::Method;
