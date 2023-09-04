@@ -4,6 +4,7 @@ pub mod lock;
 pub mod contexts;
 pub mod location;
 pub mod time;
+pub mod files;
 
 use fantoccini::wd::WebDriverCompatibleCommand;
 use http::Method;
