@@ -3,6 +3,7 @@ use async_trait::async_trait;
 use fantoccini::error::CmdError;
 use http::Method;
 use serde_json::json;
+use serde::{Serialize, Deserialize};
 use crate::{AndroidClient, AppiumClientTrait, IOSClient};
 use crate::commands::AppiumCommand;
 
@@ -95,10 +96,10 @@ pub trait InteractsWithApps: AppiumClientTrait {
 bitflags::bitflags! {
     #[repr(transparent)]
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
-    pub struct AppState: u8 {
+    pub struct AppState: i8 {
         const NOT_INSTALLED = 0;
         const NOT_RUNNING = 1;
-        const RUNNING_IN_BACKGROUND_SUSPENDED = 2,
+        const RUNNING_IN_BACKGROUND_SUSPENDED = 2;
         const RUNNING_IN_BACKGROUND = 3;
         const RUNNING_IN_FOREGROUND = 4;
     }
