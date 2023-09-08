@@ -9,6 +9,7 @@ pub mod apps;
 pub mod strings;
 pub mod network;
 pub mod activity;
+pub mod settings;
 
 use fantoccini::wd::WebDriverCompatibleCommand;
 use http::Method;
