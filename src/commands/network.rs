@@ -7,7 +7,6 @@ use crate::{AndroidClient, AppiumClientTrait};
 use crate::commands::AppiumCommand;
 
 bitflags! {
-
     #[repr(transparent)]
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     pub struct ConnectionState: u16 {

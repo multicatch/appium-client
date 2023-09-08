@@ -8,8 +8,9 @@ pub mod files;
 pub mod apps;
 pub mod strings;
 pub mod network;
-pub mod activity;
+pub mod android;
 pub mod settings;
+pub mod authentication;
 
 use fantoccini::wd::WebDriverCompatibleCommand;
 use http::Method;

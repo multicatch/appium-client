@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use async_trait::async_trait;
 use fantoccini::error::CmdError;
 use http::Method;
@@ -27,7 +28,7 @@ pub trait HasSettings : AppiumClientTrait {
         self.set_settings(map).await
     }
 
-    async fn get_settings(&self) -> Result<Map<String, Value>, CmdError> {
+    async fn get_settings(&self) -> Result<HashMap<String, Value>, CmdError> {
         let value = self.issue_cmd(AppiumCommand::Custom(
             Method::GET,
             "appium/settings".to_string(),
