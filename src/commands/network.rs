@@ -17,7 +17,7 @@ bitflags! {
 }
 
 #[async_trait]
-pub trait HasNetworkState : AppiumClientTrait {
+pub trait HasNetworkState: AppiumClientTrait {
     async fn set_connection(&self, state: &ConnectionState) -> Result<(), CmdError> {
         let bitmask = state.bits();
 
@@ -29,7 +29,7 @@ pub trait HasNetworkState : AppiumClientTrait {
                 "parameters": {
                     "type": bitmask
                 }
-            }))
+            })),
         )).await?;
 
         Ok(())
@@ -39,7 +39,7 @@ pub trait HasNetworkState : AppiumClientTrait {
         let value = self.issue_cmd(AppiumCommand::Custom(
             Method::GET,
             "network_connection".to_string(),
-            None
+            None,
         )).await?;
 
         let bits: u16 = serde_json::from_value(value)?;
@@ -50,3 +50,40 @@ pub trait HasNetworkState : AppiumClientTrait {
 
 #[async_trait]
 impl HasNetworkState for AndroidClient {}
+
+#[async_trait]
+pub trait SupportsNetworkStateManagement: AppiumClientTrait {
+
+    async fn toggle_wifi(&self) -> Result<(), CmdError> {
+        self.issue_cmd(AppiumCommand::Custom(
+            Method::POST,
+            "appium/device/toggle_wifi".to_string(),
+            None,
+        )).await?;
+
+        Ok(())
+    }
+
+    async fn toggle_airplane_mode(&self) -> Result<(), CmdError> {
+        self.issue_cmd(AppiumCommand::Custom(
+            Method::POST,
+            "appium/device/toggle_airplane_mode".to_string(),
+            None,
+        )).await?;
+
+        Ok(())
+    }
+
+    async fn toggle_data(&self) -> Result<(), CmdError> {
+        self.issue_cmd(AppiumCommand::Custom(
+            Method::POST,
+            "appium/device/toggle_data".to_string(),
+            None,
+        )).await?;
+
+        Ok(())
+    }
+}
+
+#[async_trait]
+impl SupportsNetworkStateManagement for AndroidClient {}
