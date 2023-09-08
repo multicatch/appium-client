@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-use bitflags::{bitflags, Flags};
+use bitflags::bitflags;
 use fantoccini::error::CmdError;
 use http::Method;
 use serde_json::json;
