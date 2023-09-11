@@ -9,7 +9,7 @@ use serde_json::json;
 use crate::{AndroidClient, AppiumClientTrait, IOSClient};
 use crate::commands::AppiumCommand;
 
-#[derive(Copy, Clone, Serialize, Debug)]
+#[derive(Copy, Clone, Serialize, Debug, Eq, PartialEq)]
 #[serde(rename_all = "lowercase")]
 pub enum ClipboardContentType {
     PlainText,

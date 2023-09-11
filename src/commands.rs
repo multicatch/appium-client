@@ -13,6 +13,7 @@ pub mod settings;
 pub mod authentication;
 pub mod recording;
 pub mod clipboard;
+pub mod battery;
 
 use fantoccini::wd::WebDriverCompatibleCommand;
 use http::Method;

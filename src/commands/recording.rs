@@ -157,7 +157,7 @@ pub trait AndroidCanRecordScreen: CanRecordScreen {
 #[async_trait]
 impl AndroidCanRecordScreen for AndroidClient {}
 
-#[derive(Serialize, Copy, Clone, Debug)]
+#[derive(Serialize, Copy, Clone, Debug, Eq, PartialEq)]
 #[serde(rename_all = "lowercase")]
 pub enum IOSVideoQuality {
     Low,

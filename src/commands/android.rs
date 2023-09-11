@@ -122,7 +122,7 @@ pub trait HasSupportedPerformanceDataType : AppiumClientTrait {
 #[async_trait]
 impl HasSupportedPerformanceDataType for AndroidClient {}
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Eq, PartialEq)]
 #[serde(rename_all = "lowercase")]
 pub enum GsmCallAction {
     Call,
@@ -131,7 +131,7 @@ pub enum GsmCallAction {
     Hold,
 }
 
-#[derive(Debug, Serialize_repr)]
+#[derive(Debug, Serialize_repr, Eq, PartialEq)]
 #[repr(u8)]
 pub enum GsmSignalStrength {
     NoneOrUnknown = 0,
@@ -141,7 +141,7 @@ pub enum GsmSignalStrength {
     Great = 4,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Eq, PartialEq)]
 #[serde(rename_all = "lowercase")]
 pub enum GsmVoiceState {
     ON,
@@ -153,7 +153,7 @@ pub enum GsmVoiceState {
     Unregistered,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Eq, PartialEq)]
 #[serde(rename_all = "lowercase")]
 pub enum NetworkSpeed {
     GSM,
