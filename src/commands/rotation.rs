@@ -3,12 +3,14 @@ use async_trait::async_trait;
 use fantoccini::error::CmdError;
 use http::Method;
 use serde::Deserialize;
+use serde_derive::Serialize;
 use serde_json::{json, Map, Value};
 use crate::{AndroidClient, AppiumClientTrait, IOSClient};
 use crate::commands::AppiumCommand;
-use crate::commands::rotation::Orientation::{Landscape, Portrait};
 
-#[derive(Debug)]
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub enum Orientation {
     Landscape,
     Portrait,
@@ -50,18 +52,13 @@ pub trait SupportsRotation : AppiumClientTrait {
         let value = self.issue_cmd(AppiumCommand::Custom(
             Method::GET, "orientation".to_string(), None
         )).await?;
-        let orientation: String = serde_json::from_value(value.clone())?;
-        match orientation.to_lowercase().as_str() {
-            "landscape" => Ok(Landscape),
-            "portrait" => Ok(Portrait),
-            _ => Err(CmdError::NotW3C(value))
-        }
+        Ok(serde_json::from_value(value.clone())?)
     }
 
     async fn set_orientation(&self, orientation: Orientation) -> Result<Orientation, CmdError> {
         self.issue_cmd(AppiumCommand::Custom(
             Method::POST, "orientation".to_string(), Some(json!({
-                "orientation": format!("{}", orientation)
+                "orientation": orientation
             }))
         )).await?;
 

@@ -234,6 +234,13 @@ pub trait SupportsSpecialEmulatorCommands : AppiumClientTrait {
     }
 
     async fn set_power_capacity(&self, percent: u8) -> Result<(), CmdError> {
+        if percent > 100 {
+            return Err(CmdError::InvalidArgument(
+                "percent".to_string(),
+                format!("{percent} should be between 0 and 100.")
+            ))
+        }
+
         self.issue_cmd(AppiumCommand::Custom(
             Method::POST,
             "appium/device/power_capacity".to_string(),
