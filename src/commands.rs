@@ -12,6 +12,7 @@ pub mod android;
 pub mod settings;
 pub mod authentication;
 pub mod recording;
+pub mod clipboard;
 
 use fantoccini::wd::WebDriverCompatibleCommand;
 use http::Method;
