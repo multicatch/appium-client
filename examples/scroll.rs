@@ -2,16 +2,16 @@ use std::time::Duration;
 use fantoccini::actions::{InputSource, MOUSE_BUTTON_LEFT, PointerAction, TouchActions};
 use appium_client::ClientBuilder;
 use appium_client::capabilities::*;
+use appium_client::capabilities::android::AndroidCapabilities;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut capabilities = AndroidCapabilities::new();
+    let mut capabilities = AndroidCapabilities::new_uiautomator();
     capabilities.udid("emulator-5554");
     capabilities.app("/apps/sample.apk");
     capabilities.app_wait_activity("com.example.AppActivity");
 
-    let client = ClientBuilder::native()
-        .capabilities(capabilities.into())
+    let client = ClientBuilder::native(capabilities)
         .connect("http://localhost:4723/wd/hub/")
         .await?;
 

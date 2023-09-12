@@ -7,6 +7,86 @@ Below are examples that will help you quickly learn how to use key features.
 
 Also check out the [examples](examples).
 
+## Features
+
+- [x] Predefined iOS and Android capabilities (at least some of them).
+- [x] Locking and unlocking screen.
+- [x] Getting the time of the device/emulator.
+- [x] Getting the rotation and orientation of device.
+- [x] Screen recording support.
+- [x] Battery state support.
+- [x] Android network state.
+- [x] Changing device settings.
+- [x] Pushing and pulling files.
+- [x] Getting app strings.
+- [x] Accessing device clipboard.
+- [x] Touch ID and fingerprint authentication simulation.
+- [x] Keyboard simulation.
+
+## How to use?
+
+You need to start an [Appium Server](http://appium.io) first. 
+You also need to connect a device (or an emulator) to the machine that runs the Appium Server.
+
+If you have set up Appium properly, then you can use this library to connect to the server and control the device.
+
+To connect to the Appium Server, you need to create an instance of a `Client`.
+To do so, create appropriate capabilities (e.g. `AndroidCapabilities::new()`) and then supply then to a `ClientBuilder`.
+
+You need a Tokio async runtime for it to work properly.
+
+```rust
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut capabilities = AndroidCapabilities::new();
+    capabilities.udid("emulator-5554");
+    capabilities.app("/apps/sample.apk");
+    capabilities.app_wait_activity("com.example.AppActivity");
+
+    let client = ClientBuilder::native(capabilities)
+        .connect("http://localhost:4723/wd/hub/")
+        .await?;
+
+    // now you can start testing
+
+    Ok(())
+}
+```
+
+Appium interprets the screen of the device using DOM (Document Object Model).
+Elements on the screen are translated into some kind of XML that is compliant with the W3C standard of Selenium.
+
+Appium is some kind of extension to this, with drivers that allow to control mobile devices, emulators or desktop OS.
+
+To see how Appium interprets the device screen (and to interact with the device using Appium),
+you can use a tool called [Appium Inspector](https://github.com/appium/appium-inspector).
+It's a very useful GUI tool that can help during automation development.
+
+## What if there is a missing feature?
+
+You can make a PR and add the missing feature. 
+
+If you don't have time for this, you can also issue commands directly, without relying on traits from this library.
+
+For example, let's assume Appium added a new feature called "simulate barrel roll on the device".
+Appium Server has a new API for this - `POST /session/:sessionId/appium/device/barrel_roll`.
+We can specify how many times the device will do a barrel roll in the request as `{"times": number}`.
+
+You don't have to wait until I add this feature to the library. You can issue a custom command:
+
+```rust
+client.issue_cmd(AppiumCommand::Custom(
+    Method::POST,
+    "appium/device/barrel_roll".to_string(),
+    Some(json!({
+        "times": 2
+    }))
+)).await?;
+```
+
+As you can see, I didn't add `/session/:sessionId` from the original endpoint. 
+There is no need to - the Appium client adds this automatically.
+
 ## Sample usage
 
 ### Creating the client
@@ -29,8 +109,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     capabilities.app("/apps/sample.apk");
     capabilities.app_wait_activity("com.example.AppActivity");
 
-    let client = ClientBuilder::native()
-        .capabilities(capabilities.into())
+    let client = ClientBuilder::native(capabilities)
         .connect("http://localhost:4723/wd/hub/")
         .await?;
     
@@ -169,5 +248,8 @@ Remember that the swipe will "pull" the screen, so you need to swipe down to "pu
         .await?;
 ```
 
-[See basic example here.](examples/simple.rs)
+## Examples
+
+- [See basic example here.](examples/simple.rs)
+- [Scrolling example here.](examples/scroll.rs)
 
