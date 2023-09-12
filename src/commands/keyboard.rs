@@ -400,7 +400,7 @@ pub enum AndroidKey {
     Enter = 66,
 
     /// Key code constant: Backspace key.
-    /// Deletes characters before the insertion point, unlike [AndroidKey::FORWARD_DEL].
+    /// Deletes characters before the insertion point, unlike [AndroidKey::ForwardDel].
     DEL = 67,
 
     /// Key code constant: '`' (backtick) key.
@@ -435,7 +435,7 @@ pub enum AndroidKey {
 
     /// Key code constant: Number modifier key.
     /// Used to enter numeric symbols.
-    /// This key is not Num Lock; it is more like [AndroidKey::ALT_LEFT] and is
+    /// This key is not Num Lock; it is more like [AndroidKey::AltLeft] and is
     /// interpreted as an ALT key
     NUM = 78,
 
@@ -478,7 +478,7 @@ pub enum AndroidKey {
     MediaFastForward = 90,
 
     /// Key code constant: Mute key.
-    /// Mutes the microphone, unlike [AndroidKey::VOLUME_MUTE].
+    /// Mutes the microphone, unlike [AndroidKey::VolumeMute].
     Mute = 91,
 
     /// Key code constant: Page Up key.
@@ -1203,32 +1203,32 @@ bitflags::bitflags! {
 
         /// This mask is used to check whether one of the ALT meta keys is pressed.
         ///
-        /// See also [AndroidKey::ALT_LEFT] and [AndroidKey::ALT_RIGHT]
+        /// See also [AndroidKey::AltLeft] and [AndroidKey::AltRight]
         const ALT_ON = 0x02;
 
         /// This mask is used to check whether the left ALT meta key is pressed.
         ///
-        /// See also [AndroidKey::ALT_LEFT]
+        /// See also [AndroidKey::AltLeft]
         const ALT_LEFT_ON = 0x10;
 
         /// This mask is used to check whether the right the ALT meta key is pressed.
         ///
-        /// See also [AndroidKey::ALT_RIGHT]
+        /// See also [AndroidKey::AltRight]
         const ALT_RIGHT_ON = 0x20;
 
         /// This mask is used to check whether one of the SHIFT meta keys is pressed.
         ///
-        /// See also [AndroidKey::SHIFT_LEFT] and [AndroidKey::SHIFT_RIGHT]
+        /// See also [AndroidKey::ShiftLeft] and [AndroidKey::ShiftRight]
         const SHIFT_ON = 0x1;
 
         /// This mask is used to check whether the left SHIFT meta key is pressed.
         ///
-        /// See also [AndroidKey::SHIFT_LEFT]
+        /// See also [AndroidKey::ShiftLeft]
         const SHIFT_LEFT_ON = 0x40;
 
         /// This mask is used to check whether the right SHIFT meta key is pressed.
         ///
-        /// See also [AndroidKey::SHIFT_RIGHT]
+        /// See also [AndroidKey::ShiftRight]
         const SHIFT_RIGHT_ON = 0x80;
 
         /// This mask is used to check whether the SYM meta key is pressed.
@@ -1239,47 +1239,47 @@ bitflags::bitflags! {
 
         /// This mask is used to check whether one of the CTRL meta keys is pressed.
         ///
-        /// See also [AndroidKey::CTRL_LEFT] and [AndroidKey::CTRL_RIGHT]
+        /// See also [AndroidKey::CtrlLeft] and [AndroidKey::CtrlRight]
         const CTRL_ON = 0x1000;
 
         /// This mask is used to check whether the left CTRL meta key is pressed.
         ///
-        /// See also [AndroidKey::CTRL_LEFT]
+        /// See also [AndroidKey::CtrlLeft]
         const CTRL_LEFT_ON = 0x2000;
 
         /// This mask is used to check whether the right CTRL meta key is pressed.
         ///
-        /// See also [AndroidKey::CTRL_RIGHT]
+        /// See also [AndroidKey::CtrlRight]
         const CTRL_RIGHT_ON = 0x4000;
 
         /// This mask is used to check whether one of the META meta keys is pressed.
         ///
-        /// See also [AndroidKey::META_LEFT] and [AndroidKey::META_RIGHT].
+        /// See also [AndroidKey::MetaLeft] and [AndroidKey::MetaRight].
         const META_ON = 0x10000;
 
         /// This mask is used to check whether the left META meta key is pressed.
         ///
-        /// See also [AndroidKey::META_LEFT]
+        /// See also [AndroidKey::MetaLeft]
         const META_LEFT_ON = 0x20000;
 
         /// This mask is used to check whether the right META meta key is pressed.
         ///
-        /// See also [AndroidKey::META_RIGHT]
+        /// See also [AndroidKey::MetaRight]
         const META_RIGHT_ON = 0x40000;
 
         /// This mask is used to check whether the CAPS LOCK meta key is on.
         ///
-        /// See also [AndroidKey::CAPS_LOCK]
+        /// See also [AndroidKey::CapsLock]
         const CAPS_LOCK_ON = 0x100000;
 
         /// This mask is used to check whether the NUM LOCK meta key is on.
         ///
-        /// See also [AndroidKey::NUM_LOCK]
+        /// See also [AndroidKey::NumLock]
         const NUM_LOCK_ON = 0x200000;
 
         /// This mask is used to check whether the SCROLL LOCK meta key is on.
         ///
-        /// See also [AndroidKey::SCROLL_LOCK]
+        /// See also [AndroidKey::ScrollLock]
         const SCROLL_LOCK_ON = 0x400000;
     }
 }
