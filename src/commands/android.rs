@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use async_trait::async_trait;
+use fantoccini::elements::Element;
 use fantoccini::error::CmdError;
 use http::Method;
 use serde_derive::Serialize;
@@ -273,3 +274,42 @@ pub trait SupportsSpecialEmulatorCommands : AppiumClientTrait {
 
 #[async_trait]
 impl SupportsSpecialEmulatorCommands for AndroidClient {}
+
+#[async_trait]
+pub trait ExecutesCDP : AppiumClientTrait {
+    async fn execute_cdp_command(&self, command: &str, params: Option<HashMap<String, Value>>) -> Result<HashMap<String, Value>, CmdError> {
+        let value = self.issue_cmd(AppiumCommand::Custom(
+            Method::POST,
+            "goog/cdp/execute".to_string(),
+            Some(json!({
+                "cmd": command,
+                "params": params
+            }))
+        )).await?;
+
+        Ok(serde_json::from_value(value)?)
+    }
+}
+
+#[async_trait]
+impl ExecutesCDP for AndroidClient {}
+
+#[async_trait]
+pub trait CanReplaceValue: AppiumClientTrait {
+    async fn replace_value(&self, element: &Element, value: &str) -> Result<(), CmdError> {
+        let id = element.element_id().to_string();
+        self.issue_cmd(AppiumCommand::Custom(
+            Method::POST,
+            format!("appium/element/{}/replace_value", id),
+            Some(json!({
+                "id": id,
+                "value": value
+            }))
+        )).await?;
+
+        Ok(())
+    }
+}
+
+#[async_trait]
+impl CanReplaceValue for AndroidClient {}
