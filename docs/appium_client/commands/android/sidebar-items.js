@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["GsmCallAction","GsmSignalStrength","GsmVoiceState","NetworkSpeed"],"struct":["AndroidActivity"],"trait":["CanReplaceValue","ExecutesCDP","HasAndroidDeviceDetails","HasSupportedPerformanceDataType","StartsActivity","SupportsSpecialEmulatorCommands"]};

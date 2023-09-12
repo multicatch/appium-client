@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AndroidBatteryState","IOSBatteryState"],"struct":["BatteryInfo"],"trait":["CanBeCharged","HasBattery"]};

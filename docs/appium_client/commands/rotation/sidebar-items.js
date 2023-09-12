@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Orientation"],"struct":["DeviceRotation"],"trait":["SupportsRotation"]};

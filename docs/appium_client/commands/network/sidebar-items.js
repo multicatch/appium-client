@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["ConnectionState"],"trait":["HasNetworkState","SupportsNetworkStateManagement"]};

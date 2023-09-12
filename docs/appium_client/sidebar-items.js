@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["capabilities","commands","find","wait"],"type":["ClientBuilder"]};
+window.SIDEBAR_ITEMS = {"mod":["capabilities","commands","find","wait"],"struct":["Client","ClientBuilder"],"trait":["AppiumClientTrait"],"type":["AndroidClient","IOSClient"]};

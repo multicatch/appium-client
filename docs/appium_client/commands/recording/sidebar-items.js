@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["IOSVideoQuality"],"struct":["ScreenRecordingCredentials","ScreenRecordingUploadOptions"],"trait":["AndroidCanRecordScreen","CanRecordScreen","IOSCanRecordScreen"]};

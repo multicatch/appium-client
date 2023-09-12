@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["AppiumCommand"]};
+window.SIDEBAR_ITEMS = {"enum":["AppiumCommand"],"mod":["android","apps","authentication","battery","clipboard","contexts","files","ios","keyboard","location","lock","network","recording","rotation","settings","strings","time"]};
