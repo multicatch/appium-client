@@ -22,7 +22,7 @@ impl Display for Orientation {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
 pub struct DeviceRotation {
     x: u16,
     y: u16,

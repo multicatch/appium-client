@@ -14,6 +14,7 @@ pub mod authentication;
 pub mod recording;
 pub mod clipboard;
 pub mod battery;
+pub mod ios;
 
 use fantoccini::wd::WebDriverCompatibleCommand;
 use http::Method;
