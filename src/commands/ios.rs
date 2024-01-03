@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use fantoccini::error::CmdError;
 use http::Method;
-use crate::AppiumClientTrait;
+use crate::{AppiumClientTrait, IOSClient};
 use crate::commands::AppiumCommand;
 
 #[async_trait]
@@ -17,3 +17,5 @@ pub trait ShakesDevice : AppiumClientTrait {
         Ok(())
     }
 }
+
+impl ShakesDevice for IOSClient {}

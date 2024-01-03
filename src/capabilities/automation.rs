@@ -1,3 +1,10 @@
+//! Automation name constants 
+//! 
+//! These constants contain names of build-in Appium drivers (at least as of Appium 2.1).
+//! Use them to with [crate::capabilities::AppiumCapability::automation_name].
+//! 
+//! Note: [crate::capabilities::android::AndroidCapabilities] and [crate::capabilities::ios::IOSCapabilities] set them automatically.
+  
 /// <https://github.com/appium/appium-xcuitest-driver>
 pub const IOS_XCUI_TEST: &str = "XCuiTest";
 
