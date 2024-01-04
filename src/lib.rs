@@ -3,12 +3,14 @@
 //! It is based on [fantoccini](https://github.com/jonhoo/fantoccini) and retains all capabilities
 //! of fantoccini's client, such as screenshotting, touch actions, getting page source etc.
 //!
+//! Please note that this is only a client of [Appium](https://appium.io/docs/en/2.1/), so also check out [Appium docs](https://appium.io/docs/en/2.1/).
+//!
 //! ## Creating a client
 //! To create a client, you need [capabilities] for the Appium session.
 //! Capabilities describe what device you use and they will determine what features are available to you.
 //!
 //! After creating a desired set of capabilities, use [ClientBuilder] to create a client.
-//! And you also need a running Appium server, see Appium docs for how to set up one (<<https://appium.io/docs/en/2.1/quickstart/>>).
+//! And you also need a running Appium server, see Appium docs for how to set up one (<https://appium.io/docs/en/2.1/quickstart/>).
 //!
 //! Creating an iOS capabilities and client:
 //! ```no_run

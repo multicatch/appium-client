@@ -2,8 +2,19 @@
 
 Rust client for Appium Server, for automated mobile app testing. It is based on [fantoccini](https://github.com/jonhoo/fantoccini).
 
-To learn more about Appium-specific features implemented here, [see the documentation](https://multicatch.github.io/appium-client/appium_client/). 
-Below are examples that will help you quickly learn how to use key features.
+Appium is a tool for automating native app testing. In other words, it's used for simulating user activity in apps.
+You tell Appium what to look for on a screen and what to click, and Appium does it for you.
+
+Appium is a tool consisting of:
+* **an Appium server** serving Appium API through REST and delegating commands to a driver,
+* **Appium API** which is a unified way to send commands,
+* **Appium driver** which is a library that knows how to communicate with a device you want to control. 
+
+This library is **an Appium client**. Which means it sends commands to the Appium server. 
+You need to set up Appium in order to use this library. 
+
+The documentation mainly focuses on the client aspect of the whole tool. 
+So if you need more info about the Appium server, driver or device setup, please refer to the [Appium docs](https://appium.io/docs/en/2.1/).
 
 Also check out the [examples](examples).
 
@@ -22,6 +33,15 @@ Also check out the [examples](examples).
 - [x] Accessing device clipboard.
 - [x] Touch ID and fingerprint authentication simulation.
 - [x] Keyboard simulation.
+- [x] Ability to use unimplemented features and drivers.
+
+# Guides, tutorials and documentation
+
+* [Quick Guide](#quick-guide)
+* [Setup And Writing Your First Automation](SETUP.md)
+* [Documentation](https://multicatch.github.io/appium-client/appium_client/)
+
+# Quick Guide
 
 ## How to use?
 
@@ -31,7 +51,7 @@ You also need to connect a device (or an emulator) to the machine that runs the 
 If you have set up Appium properly, then you can use this library to connect to the server and control the device.
 
 To connect to the Appium Server, you need to create an instance of a `Client`.
-To do so, create appropriate capabilities (e.g. `AndroidCapabilities::new()`) and then supply then to a `ClientBuilder`.
+To do so, create appropriate [capabilities](https://appium.io/docs/en/2.1/guides/caps/) (e.g. `AndroidCapabilities::new()`) and then supply then to a `ClientBuilder`.
 
 You need a Tokio async runtime for it to work properly.
 
@@ -62,7 +82,7 @@ To see how Appium interprets the device screen (and to interact with the device 
 you can use a tool called [Appium Inspector](https://github.com/appium/appium-inspector).
 It's a very useful GUI tool that can help during automation development.
 
-## What if there is a missing feature?
+## What if there is a missing feature in this lib?
 
 You can make a PR and add the missing feature. 
 
