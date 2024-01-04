@@ -11,6 +11,8 @@
 //! Appium will then examine the capabilities and make sure that it can satisfy them before proceeding to start the session and
 //! return an ID representing the session to your client library.
 //!
+//! See also <https://appium.io/docs/en/2.1/guides/caps/>.
+//!
 //! ## Platform-specific capabilities
 //! You can create capabilities to pass to Appium sercer by using either [android::AndroidCapabilities] or [ios::IOSCapabilities].
 //!
@@ -56,12 +58,12 @@ pub trait AppiumCapability
     /// Appium usually autoselects the driver based on platform, but you choose the preferred driver.
     /// See [automation] for possible values.
     fn automation_name(&mut self, automation_name: &str) {
-        self.set_str("automationName", automation_name);
+        self.set_str("appium:automationName", automation_name);
     }
 
     /// The version of a platform, e.g., for iOS, "16.0"
     fn platform_version(&mut self, version: &str) {
-        self.set_str("platformVersion", version);
+        self.set_str("appium:platformVersion", version);
     }
 
     /// The name of a particular device to automate.
@@ -71,7 +73,7 @@ pub trait AppiumCapability
     /// since in other situations it's typically recommended to use a specific device
     /// id via the `appium:udid` capability.
     fn device_name(&mut self, device_name: &str) {
-        self.set_str("deviceName", device_name);
+        self.set_str("appium:deviceName", device_name);
     }
 
     /// Sets a string capability.
@@ -103,7 +105,7 @@ pub trait UdidCapable: AppiumCapability {
     /// Android id can be retrieved by using ADB (`adb devices`).
     /// For iOS, it's the phone's serial number.
     fn udid(&mut self, udid: &str) {
-        self.set_str("udid", udid);
+        self.set_str("appium:udid", udid);
     }
 }
 
@@ -111,7 +113,7 @@ pub trait UdidCapable: AppiumCapability {
 pub trait AppCapable: AppiumCapability {
     /// The path to an installable application.
     fn app(&mut self, app_path: &str) {
-        self.set_str("app", app_path);
+        self.set_str("appium:app", app_path);
     }
 
     /// App or list of apps (as a JSON array) to install prior to running tests.
@@ -122,7 +124,7 @@ pub trait AppCapable: AppiumCapability {
             .map(|p| Value::String(p.to_string()))
             .collect();
 
-        self.insert("otherApps".to_string(), Value::Array(paths));
+        self.insert("appium:otherApps".to_string(), Value::Array(paths));
     }
 
     /// Don't reset app state before this session.
@@ -130,7 +132,7 @@ pub trait AppCapable: AppiumCapability {
     /// "Reset" means to delete app data (like a fresh install).
     /// If true, instruct an Appium driver to avoid its usual reset logic during session start and cleanup (default false).
     fn no_reset(&mut self, no_reset: bool) {
-        self.set_bool("noReset", no_reset);
+        self.set_bool("appium:noReset", no_reset);
     }
 
     /// Perform a complete reset.
@@ -138,7 +140,7 @@ pub trait AppCapable: AppiumCapability {
     /// "Complete reset" usually means a reinstall.
     /// If true, instruct an Appium driver to augment its usual reset logic with additional steps to ensure maximum environmental reproducibility (default false)
     fn full_reset(&mut self, full_reset: bool) {
-        self.set_bool("fullReset", full_reset);
+        self.set_bool("appium:fullReset", full_reset);
     }
 
     /// When a find operation fails, print the current page source. Defaults to false.
@@ -147,7 +149,7 @@ pub trait AppCapable: AppiumCapability {
     /// of the visible app screen.
     /// This DOM can be further inspected to check if the locator is correct, or if the correct page is displayed.
     fn print_page_source_on_find_failure(&mut self, value: bool) {
-        self.set_bool("printPageSourceOnFindFailure", value);
+        self.set_bool("appium:printPageSourceOnFindFailure", value);
     }
 }
 
@@ -158,14 +160,14 @@ pub trait UiAutomator2AppCompatible: AppiumCapability {
     /// This often needs to be preceded by a `.` (a dot, e.g., `.MainActivity` instead of `MainActivity`).
     /// By default this capability is received from the package manifest.
     fn app_activity(&mut self, activity: &str) {
-        self.set_str("appActivity", activity);
+        self.set_str("appium:appActivity", activity);
     }
 
     /// Java package of the Android app you want to run.
     ///
     /// By default this capability is received from the package manifest.
     fn app_package(&mut self, activity: &str) {
-        self.set_str("appPackage", activity);
+        self.set_str("appium:appPackage", activity);
     }
 
     /// Activity name/names, comma separated, for the Android activity you want to wait for.
@@ -175,7 +177,7 @@ pub trait UiAutomator2AppCompatible: AppiumCapability {
     /// from the one which is set as appActivity if your capability has `appActivity` and `appPackage`.
     /// You can also use wildcards (*).
     fn app_wait_activity(&mut self, activity: &str) {
-        self.set_str("appWaitActivity", activity);
+        self.set_str("appium:appWaitActivity", activity);
     }
 
     /// Java package of the Android app you want to wait for.
@@ -187,12 +189,12 @@ pub trait UiAutomator2AppCompatible: AppiumCapability {
 
     /// Timeout in milliseconds used to wait for the appWaitActivity to launch (default 20000)
     fn app_wait_duration(&mut self, duration: Duration) {
-        self.set_number("appWaitDuration", Number::from(duration.as_millis() as u64));
+        self.set_number("appium:appWaitDuration", Number::from(duration.as_millis() as u64));
     }
 
     /// Timeout in milliseconds used to wait for an apk to install to the device. Defaults to 90000
     fn android_install_timeout(&mut self, duration: Duration) {
-        self.set_number("androidInstallTimeout", Number::from(duration.as_millis() as u64));
+        self.set_number("appium:androidInstallTimeout", Number::from(duration.as_millis() as u64));
     }
 
     /// Block until app starts.
@@ -211,14 +213,14 @@ pub trait UiAutomator2AppCompatible: AppiumCapability {
     /// to be restarted if either this capability set to true or appium:dontStopAppOnReset is falsy
     /// (the default behavior). false by default. Available since driver version 2.12
     fn force_app_launch(&mut self, value: bool) {
-        self.set_bool("forceAppLaunch", value)
+        self.set_bool("appium:forceAppLaunch", value)
     }
 
     /// Whether to launch the application under test automatically after a test starts.
     ///
     /// Default: true
     fn auto_launch(&mut self, value: bool) {
-        self.set_bool("autoLaunch", value)
+        self.set_bool("appium:autoLaunch", value)
     }
 
     /// Set an optional intent category to be applied when starting the given appActivity by Activity Manager.
@@ -226,26 +228,26 @@ pub trait UiAutomator2AppCompatible: AppiumCapability {
     /// Defaults to `android.intent.category.LAUNCHER`.
     /// Please use `mobile:startActivity` in case you don't set an explicit value.
     fn intent_category(&mut self, value: &str) {
-        self.set_str("intentCategory", value);
+        self.set_str("appium:intentCategory", value);
     }
 
     /// Set an optional intent action to be applied when starting the given appActivity by Activity Manager.
     ///
     /// Defaults to `android.intent.action.MAIN`. Please use `mobile:startActivity` in case you don't set an explicit value.
     fn intent_action(&mut self, value: &str) {
-        self.set_str("intentAction", value);
+        self.set_str("appium:intentAction", value);
     }
 
     /// Set an optional intent flags to be applied when starting the given appActivity by Activity Manager.
     ///
     /// Defaults to 0x10200000 (FLAG_ACTIVITY_NEW_TASK)
     fn intent_flags(&mut self, value: &str) {
-        self.set_str("intentFlags", value);
+        self.set_str("appium:intentFlags", value);
     }
 
     /// Set an optional intent arguments to be applied when starting the given appActivity by Activity Manager
     fn optional_intent_arguments(&mut self, value: &str) {
-        self.set_str("optionalIntentArguments", value);
+        self.set_str("appium:optionalIntentArguments", value);
     }
 
     /// Set it to true if you don't want the application to be restarted if it was already running.
@@ -255,12 +257,12 @@ pub trait UiAutomator2AppCompatible: AppiumCapability {
     ///
     /// `false` by default
     fn dont_stop_app_on_reset(&mut self, value: bool) {
-        self.set_bool("dontStopAppOnReset", value);
+        self.set_bool("appium:dontStopAppOnReset", value);
     }
 
     /// Allows to set one or more comma-separated package identifiers to be uninstalled from the device before a test starts.
     fn uninstall_other_packages(&mut self, value: &str) {
-        self.set_str("uninstallOtherPackages", value);
+        self.set_str("appium:uninstallOtherPackages", value);
     }
 
     /// Sets the maximum amount of application packages to be cached on the device under test.
@@ -270,7 +272,7 @@ pub trait UiAutomator2AppCompatible: AppiumCapability {
     ///
     /// Setting this capability to zero disables apps caching. 10 by default.
     fn remote_apps_cache_limit(&mut self, value: u64) {
-        self.set_number("remoteAppsCacheLimit", Number::from(value));
+        self.set_number("appium:remoteAppsCacheLimit", Number::from(value));
     }
 
     /// Use packages built with test flag.
@@ -280,7 +282,7 @@ pub trait UiAutomator2AppCompatible: AppiumCapability {
     ///
     /// false by default
     fn allow_test_packages(&mut self, value: bool) {
-        self.set_bool("allowTestPackages", value);
+        self.set_bool("appium:allowTestPackages", value);
     }
 
     /// Reinstall app (even if it's a downgrade).
@@ -291,14 +293,14 @@ pub trait UiAutomator2AppCompatible: AppiumCapability {
     ///
     /// `false` by default
     fn enforce_app_install(&mut self, value: bool) {
-        self.set_bool("enforceAppInstall", value);
+        self.set_bool("appium:enforceAppInstall", value);
     }
 }
 
 /// Capabilities for Settings API (<https://appium.io/docs/en/2.1/guides/settings/>).
 pub trait AppiumSettingsCapable: AppiumCapability {
     fn set_setting(&mut self, name: &str, value: Value) {
-        self.insert(format!("settings[{name}]"), value);
+        self.insert(format!("appium:settings[{name}]"), value);
     }
 }
 
@@ -306,36 +308,36 @@ pub trait AppiumSettingsCapable: AppiumCapability {
 pub trait XCUITestAppCompatible: AppiumCapability {
     /// Bundle id of app. Looks like app package (`com.my.app`).
     fn bundle_id(&mut self, id: &str) {
-        self.set_str("bundleId", id);
+        self.set_str("appium:bundleId", id);
     }
 
     /// Where to look for localizable strings. Default en.lproj
     fn localizable_strings_dir(&mut self, dir: &str) {
-        self.set_str("localizableStringsDir", dir);
+        self.set_str("appium:localizableStringsDir", dir);
     }
 
     /// Language to set for the simulator / emulator.
     ///
     /// You need to set this manually on physical devices.
     fn language(&mut self, language: &str) {
-        self.set_str("language", language);
+        self.set_str("appium:language", language);
     }
 
     /// Locale to set for the simulator / emulator.
     ///
     /// You need to set this manually on physical devices.
     fn locale(&mut self, locale: &str) {
-        self.set_str("locale", locale);
+        self.set_str("appium:locale", locale);
     }
 
     /// Calendar format to set for the iOS Simulator (eg. `gregorian`).
     fn calendar_format(&mut self, value: &str) {
-        self.set_str("calendarFormat", value);
+        self.set_str("appium:calendarFormat", value);
     }
 
     /// Timeout for application upload in millisecond, on real devices
     fn app_push_timeout(&mut self, duration: Duration) {
-        self.set_number("appPushTimeout", Number::from(duration.as_millis() as u64));
+        self.set_number("appium:appPushTimeout", Number::from(duration.as_millis() as u64));
     }
 
     /// Select application installation strategy for real devices.
@@ -345,13 +347,13 @@ pub trait XCUITestAppCompatible: AppiumCapability {
     /// * `parallel` - pushes app files simultaneously; this is usually the the most performant strategy, but sometimes could not be very stable;
     /// * `ios-deploy` - tells the driver to use a third-party tool ios-deploy to install the app; obviously the tool must be installed separately first and must be present in PATH before it could be used.
     fn app_install_strategy(&mut self, value: &str) {
-        self.set_str("appInstallStrategy", value);
+        self.set_str("appium:appInstallStrategy", value);
     }
 
     /// Accept all iOS alerts automatically if they pop up.
     ///
     /// This includes privacy access permission alerts (e.g., location, contacts, photos). Default is false.
     fn auto_accept_alerts(&mut self, value: bool) {
-        self.set_bool("autoAcceptAlerts", value);
+        self.set_bool("appium:autoAcceptAlerts", value);
     }
 }
