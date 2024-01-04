@@ -3,11 +3,18 @@
 //! The commands in submodules are a facade to low-level `issue_cmd` ([fantoccini::Client::issue_cmd]).
 //! So in most cases, you need a specific function from one of those modules (e.g. [keyboard::HidesKeyboard::hide_keyboard]).
 //!
+//! ## Available commands
+//! **Please check all submodules if you want to learn what features are implemented in this lib.**
+//! See traits in below modules to learn what you can do with the client.
+//!
+//! Alternatively, you can check out [crate::IOSClient] and [crate::AndroidClient] to see all traits of those clients in the docs.
+//!
+//! ## How to use commands
 //! [AppiumCommand] is a struct used by low-level `issue_cmd` ([fantoccini::Client::issue_cmd]).
 //! So unless you're implementing missing features yourself, you don't need to wory about it.
 //!
 //! This lib exposes both APIs to be more flexible.
-//! So a rule of thumb:
+//! So a rule of thumb is:
 //! * use a command from submodule if it's available (in other words - use by default),
 //! * use [AppiumCommand::Custom] in other cases
 //!
@@ -46,6 +53,7 @@
 //!#     Ok(())
 //!# }
 //! ```
+//!
 
 pub mod rotation;
 pub mod keyboard;

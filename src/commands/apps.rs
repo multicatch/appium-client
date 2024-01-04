@@ -1,3 +1,4 @@
+//! Management of apps on the device
 use std::time::Duration;
 use async_trait::async_trait;
 use fantoccini::error::CmdError;
@@ -7,6 +8,7 @@ use serde::{Serialize, Deserialize};
 use crate::{AndroidClient, AppiumClientTrait, IOSClient};
 use crate::commands::AppiumCommand;
 
+/// Inspect or install other apps
 #[async_trait]
 pub trait InteractsWithApps: AppiumClientTrait {
     async fn install_app(&self, path: &str) -> Result<(), CmdError> {

@@ -1,9 +1,11 @@
+//! iOS-specific features
 use async_trait::async_trait;
 use fantoccini::error::CmdError;
 use http::Method;
 use crate::{AppiumClientTrait, IOSClient};
 use crate::commands::AppiumCommand;
 
+/// Simulate device shake
 #[async_trait]
 pub trait ShakesDevice : AppiumClientTrait {
     /// Simulate shaking the device.

@@ -1,3 +1,4 @@
+//! Clipboard management
 use async_trait::async_trait;
 use base64::Engine;
 use base64::engine::general_purpose;
@@ -17,6 +18,7 @@ pub enum ClipboardContentType {
     URL,
 }
 
+/// Retrieve and save data in device's clipboard
 #[async_trait]
 pub trait HasClipboard: AppiumClientTrait {
     async fn get_clipboard(&self, content_type: ClipboardContentType) -> Result<Vec<u8>, CmdError> {

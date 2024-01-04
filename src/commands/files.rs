@@ -1,3 +1,4 @@
+//! Files management
 use async_trait::async_trait;
 use base64::Engine;
 use base64::engine::general_purpose;
@@ -7,8 +8,9 @@ use serde_json::json;
 use crate::{AndroidClient, AppiumClientTrait, IOSClient};
 use crate::commands::AppiumCommand;
 
+/// Download files and folders from the device (to your computer)
 #[async_trait]
-pub trait PullsFiles : AppiumClientTrait{
+pub trait PullsFiles : AppiumClientTrait {
 
     /// Pulls a single file from device
     async fn pull_file(&self, path: &str) -> Result<Vec<u8>, CmdError> {
@@ -49,6 +51,7 @@ impl PullsFiles for AndroidClient {}
 #[async_trait]
 impl PullsFiles for IOSClient {}
 
+/// Upload files and folders onto the device
 #[async_trait]
 pub trait PushesFiles : AppiumClientTrait {
     async fn push_file(&self, path: &str, data: &[u8]) -> Result<(), CmdError> {

@@ -34,6 +34,9 @@
 //! # }
 //! ```
 //!
+//! Notice that if you wish to get only one element (the first match), you can use [AppiumFind::find_by].
+//! If you want all matches on a screen, you use [AppiumFind::find_all_by].
+//!
 //! ## Custom locator strategy
 //!
 //! If none of the options available in [By] work with your driver, then you might use [By::custom_kind] to specify custom location strategy (and search query).

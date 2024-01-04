@@ -78,6 +78,22 @@
 //! # Ok(())
 //! # }
 //! ```
+//!
+//! Waiting for a list of elements
+//! Instead of [Wait::for_element], there is [Wait::for_elements] (notice the **s** at the end).
+//! The second method returns a Vec of elements instead of one elements.
+//!
+//! When you use the second function, the wait works the same.
+//! It still waits in the same way, and waits for the element to appear.
+//!
+//! The only difference is that after AT LEAST ONE matching elements has appeared, the wait is over.
+//! You get the result, and the result is a Vec of all matching elements.
+//!
+//! That means - if all elements appeared simultaneously, then you will get all elements.
+//! This method will not wait for all possible elements to appear.
+//! So if some elements appear with a delay - then they might not be there.
+//! This method returns immediately after at least one match.
+//!
 use std::time::Duration;
 use fantoccini::Client;
 use fantoccini::elements::Element;

@@ -172,6 +172,12 @@ pub mod commands;
 pub mod find;
 pub mod wait;
 
+/// Client builder
+///
+/// Use this struct to build Appium client.
+/// This struct has methods that will guide you through all necessary things needed to construct a client.
+///
+/// Do not create an instance of [Client] yourself, use this builder.
 pub struct ClientBuilder<C, Caps>
     where
         C: connect::Connect + Send + Sync + Clone + Unpin,
@@ -222,6 +228,17 @@ impl<C, Caps> ClientBuilder<C, Caps>
     }
 }
 
+/// Generic Appium client
+///
+/// This client represents an Appium client that will connect to an Appium server
+/// and send command to said server.
+///
+/// Depending on chosen capabilities ([AppiumCapability]), the client will have different traits.
+/// Which means - different available features.
+///
+/// Check out [AndroidClient] and [IOSClient] in docs to see their features (available commands).
+///
+/// **Note**: [Client] automatically ends Appium session on drop (end of lifetime). This is the only way to end session.
 pub struct Client<Caps>
     where Caps: AppiumCapability {
     inner: fantoccini::Client,
@@ -230,7 +247,61 @@ pub struct Client<Caps>
 
 pub trait AppiumClientTrait: DerefMut<Target=fantoccini::Client> {}
 
+/// Client used to automate Android testing
+///
+/// To create [AndroidClient], you need to use [ClientBuilder] and [AndroidCapabilities].
+/// Rust type system will automatically pick up that by using those capabilities, you mean to control an Android device.
+///
+/// See trait implementations to check available features (commands) of this client.
+///
+/// ```no_run
+/// use appium_client::capabilities::{AppCapable, UdidCapable, UiAutomator2AppCompatible};
+/// use appium_client::capabilities::android::AndroidCapabilities;
+/// use appium_client::ClientBuilder;
+///
+///# #[tokio::main]
+///# async fn main() -> Result<(), Box<dyn std::error::Error>> {
+/// let mut capabilities = AndroidCapabilities::new_uiautomator();
+/// capabilities.udid("emulator-5554");
+/// capabilities.app("/apps/sample.apk");
+/// capabilities.app_wait_activity("com.example.AppActivity");
+///
+/// let client = ClientBuilder::native(capabilities)
+///    .connect("http://localhost:4723/wd/hub/")
+///    .await?;
+///
+/// // congratulations, you have successfully created an AndroidClient
+/// # Ok(())
+/// # }
+/// ```
 pub type AndroidClient = Client<AndroidCapabilities>;
+
+/// Client used to automate iOS testing
+///
+/// To create [IOSClient], you need to use [ClientBuilder] and [IOSCapabilities].
+/// Rust type system will automatically pick up that by using those capabilities, you mean to control an iOS device.
+///
+/// See trait implementations to check available features (commands) of this client.
+///
+/// ```no_run
+/// use appium_client::capabilities::{AppCapable, UdidCapable};
+/// use appium_client::capabilities::ios::IOSCapabilities;
+/// use appium_client::ClientBuilder;
+///
+///# #[tokio::main]
+///# async fn main() -> Result<(), Box<dyn std::error::Error>> {
+/// let mut capabilities = IOSCapabilities::new_xcui();
+/// capabilities.udid("000011114567899");
+/// capabilities.app("/apps/sample.ipa");
+///
+/// let client = ClientBuilder::native(capabilities)
+///    .connect("http://localhost:4723/wd/hub/")
+///    .await?;
+///
+/// // congratulations, you have successfully created an IOSClient
+/// # Ok(())
+/// # }
+/// ```
 pub type IOSClient = Client<IOSCapabilities>;
 
 impl<Caps> AppiumClientTrait for Client<Caps>
