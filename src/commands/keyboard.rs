@@ -1,3 +1,4 @@
+//! Keyboard management
 use async_trait::async_trait;
 use fantoccini::error::CmdError;
 use http::Method;
@@ -7,6 +8,7 @@ use serde_repr::Serialize_repr;
 use crate::{AndroidClient, AppiumClientTrait, IOSClient};
 use crate::commands::AppiumCommand;
 
+/// Hide onscreen keyboard
 #[async_trait]
 pub trait HidesKeyboard: AppiumClientTrait {
     /// Tries to hide keyboard using default system mechanism.
@@ -125,6 +127,7 @@ impl From<AndroidKey> for KeyEvent {
     }
 }
 
+/// Send key presses to device
 #[async_trait]
 pub trait PressesKey: AppiumClientTrait {
     async fn press_key(&self, event: KeyEvent) -> Result<(), CmdError> {
@@ -155,6 +158,7 @@ pub trait PressesKey: AppiumClientTrait {
 #[async_trait]
 impl PressesKey for AndroidClient {}
 
+/// Check onscreen keyboard
 #[async_trait]
 pub trait HasOnScreenKeyboard: AppiumClientTrait {
     async fn keyboard_shown(&self) -> Result<bool, CmdError> {

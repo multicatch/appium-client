@@ -1,3 +1,30 @@
+//! iOS capabilities
+//!
+//! By using [IOSCapabilities] you can create a client with features specific to iOS (XCUI) testing.
+//! For example, a client created from [IOSCapabilities] can be used to shake the device (but not literally, device thinks it's shaken).
+//!
+//! ```no_run
+//! use appium_client::capabilities::{AppCapable, UdidCapable};
+//! use appium_client::capabilities::ios::IOSCapabilities;
+//! use appium_client::ClientBuilder;
+//! use appium_client::commands::ios::ShakesDevice;
+//!
+//!# #[tokio::main]
+//!# async fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! let mut capabilities = IOSCapabilities::new_xcui();
+//! capabilities.udid("000011114567899");
+//! capabilities.app("/apps/sample.ipa");
+//!
+//! let client = ClientBuilder::native(capabilities)
+//!    .connect("http://localhost:4723/wd/hub/")
+//!    .await?;
+//!
+//! // simulate shake (available only with iOS)
+//! client.shake().await?;
+//!# Ok(())
+//!# }
+//! ```
+
 use std::ops::{Deref, DerefMut};
 use fantoccini::wd::Capabilities;
 use serde_json::Value;

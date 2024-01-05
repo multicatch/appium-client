@@ -1,3 +1,4 @@
+//! Network management
 use async_trait::async_trait;
 use bitflags::bitflags;
 use fantoccini::error::CmdError;
@@ -16,6 +17,7 @@ bitflags! {
     }
 }
 
+/// Check network status (wifi, mobile data, airplane, or change status in emulator)
 #[async_trait]
 pub trait HasNetworkState: AppiumClientTrait {
     async fn set_connection(&self, state: &ConnectionState) -> Result<(), CmdError> {
@@ -51,6 +53,7 @@ pub trait HasNetworkState: AppiumClientTrait {
 #[async_trait]
 impl HasNetworkState for AndroidClient {}
 
+/// Toggle network status
 #[async_trait]
 pub trait SupportsNetworkStateManagement: AppiumClientTrait {
 

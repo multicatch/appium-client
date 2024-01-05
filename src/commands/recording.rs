@@ -1,3 +1,4 @@
+//! Screen recording
 use std::collections::HashMap;
 use std::time::Duration;
 use async_trait::async_trait;
@@ -67,6 +68,7 @@ impl ScreenRecordingUploadOptions {
     }
 }
 
+/// Record screen
 #[async_trait]
 pub trait CanRecordScreen: AppiumClientTrait {
     async fn start_recording_screen(&self) -> Result<String, CmdError> {
@@ -115,6 +117,7 @@ impl CanRecordScreen for AndroidClient {}
 #[async_trait]
 impl CanRecordScreen for IOSClient {}
 
+/// Record screen with Android-specific encoding options
 #[async_trait]
 pub trait AndroidCanRecordScreen: CanRecordScreen {
     /// Starts screen recording (Android).
@@ -166,6 +169,7 @@ pub enum IOSVideoQuality {
     Photo,
 }
 
+/// Record screen with iOS-specific encoding options
 #[async_trait]
 pub trait IOSCanRecordScreen : CanRecordScreen {
     /// Starts screen recording (Android).

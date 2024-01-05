@@ -1,3 +1,30 @@
+//! Android capabilities
+//!
+//! By using [AndroidCapabilities] you can create a client with features specific to Android testing.
+//! For example, a client created from [AndroidCapabilities] can be used to check current activity.
+//!
+//! ```no_run
+//! use appium_client::capabilities::android::AndroidCapabilities;
+//! use appium_client::capabilities::{AppCapable, UdidCapable, UiAutomator2AppCompatible};
+//! use appium_client::ClientBuilder;
+//! use appium_client::commands::android::StartsActivity;
+//!
+//!# #[tokio::main]
+//!# async fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! let mut capabilities = AndroidCapabilities::new_uiautomator();
+//! capabilities.udid("emulator-5554");
+//! capabilities.app("/apps/sample.apk");
+//! capabilities.app_wait_activity("com.example.AppActivity");
+//!
+//! let client = ClientBuilder::native(capabilities)
+//!    .connect("http://localhost:4723/wd/hub/")
+//!    .await?;
+//!
+//! // print current Android activity (not available on other platforms)
+//! println!("{}", client.current_activity().await?);
+//!# Ok(())
+//!# }
+//! ```
 use std::ops::{Deref, DerefMut};
 use fantoccini::wd::Capabilities;
 use serde_json::Value;
