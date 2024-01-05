@@ -43,6 +43,9 @@ Also check out the [examples](examples).
 
 # Quick Guide
 
+This quick guide assumes you know how Appium works. It focuses on a key features of this lib.
+If you want a more basic guide, see [Setup And Writing Your First Automation](SETUP.md).
+
 ## How to use?
 
 You need to start an [Appium Server](http://appium.io) first. 

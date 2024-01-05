@@ -20,7 +20,7 @@ After you set up Android Studio, Appium and UiAutomator2, you can write [your fi
 ## In this tutorial
 
 * [The Setup](#the-setup)
-    * [Android Studio setup](#android-studio-setup)
+    * [Android Studio Setup](#android-studio-setup)
         * [Installing Android SDK](#installing-android-sdk-platform-tools-with-adb)
         * [Set Up The Emulator](#set-up-the-emulator)
     * [Appium Setup](#appium-setup)
@@ -38,6 +38,10 @@ After you set up Android Studio, Appium and UiAutomator2, you can write [your fi
   * [The Development](#the-development)
     * [Set Up a Rust Project](#set-up-a-rust-project)
     * [Run App via Rust Code](#run-app-via-rust-code)
+    * [Automating A Tap On Element](#automating-a-tap-on-element)
+    * [Different Types Of Locators](#different-types-of-locators)
+    * [Entering Text](#entering-text)
+    * [Going Back And Scrolling](#going-back-and-scrolling)
 
 # The Setup
 
@@ -291,7 +295,7 @@ Appium Inspector will now show the captured app screen and the "App Source".
 
 Appium Inspector does not update the screen live. 
 It only shows a capture. 
-To refresh the view, you need to click "refresh" icon at the top bar.
+To refresh the view, you need to click "refresh" icon in the top bar.
 
 When you click any element on the screenshot, then Inspector will highlight
 a part of the App Source, which represents the element.
@@ -306,12 +310,13 @@ Try to play around in Appium Inspector on your own.
 ### Set Up a Rust Project
 
 Use `cargo init` or your IDE to create a new Rust project.
-I use IntelliJ IDEA with Rust plugin.
+I use an outdated IntelliJ IDEA CE with Rust plugin.
 
 Add the following dependencies to `Cargo.toml`:
 
 ```toml
 appium-client = "0.2.1"
+fantoccini = "0.19.3"
 tokio = "1.25.0"
 ```
 
@@ -333,10 +338,10 @@ Now to start an Appium session from Rust, we need to:
 * connect to Appium server and start the session (which here is the same as creating the client).
 
 We are automating an Android test with UiAutomator2 driver. 
-So we can use `AndroidCapabilities::new_uiautomator()` to create basic set of capabilities.
+So we can use `AndroidCapabilities::new_uiautomator()` to create basic set of capabilities for that purpose.
 
-When you create `AndroidCapabilities` by using this function, then you will automatically set:
-* `platformName` = `Android`                                                          |
+When you create `AndroidCapabilities` by using `new_uiautomator()`, then you will automatically set:
+* `platformName` = `Android`
 * `automationName` = `UiAutomator2`
 
 Now we need to set only the two last capabilities - `platformVersion` and `app`.
@@ -387,5 +392,408 @@ If it did not work, then check if:
 * Appium server is running,
 * Appium and UiAutomator2 was set up correctly,
 * Android emulator is running,
+* The device is unlocked,
 * You enabled debugging on your Android device.
 
+### Automating A Tap On Element
+
+So let's try to automate a tap on an element.
+Appium need to know where to tap.
+We need a way to locate an element, so we can tell Appium "find this element and tap it".
+
+Let's go back to Appium Inspector. 
+**Before we start using it again, we need to restart the session.**
+
+When you run a test in your code, it automatically replaces Appium Inspector session. 
+Appium Inspector looses the ability to do anything in Appium.
+
+So after you run your automation, you need to restart the session in the Inspector.
+Close session by clicking "x" in the top bar and then "Start Session" again.
+
+Click "Views" in the screen capture.
+
+![](docimg/inspector_views_element.png)
+
+We can see many attributes that seem like a good way to tell Appium how to find an element we want to tap.
+For example, `accessibility id` looks promising - it's just `Views`. And we want to tap `Views`.
+
+Let's go back to code.
+
+To find an element on screen, we will use `find_by`. 
+Your IDE might suggest you a very similarly named function `find`.
+**But don't use that one**. 
+
+Function `find` is a base Selenium function, and it does not support special Appium features.
+`find_by` is an enhanced function, which gives you more options and more flexibility with Appium.
+
+This function needs a parameter of type `By`. `By` represents two thing:
+* how to look for an element (by `accessibility id`),
+* what to expect (`Views`).
+
+Usage of `find_by` and `By` in this case looks like this:
+
+```text
+let views = client.find_by(By::accessibility_id("Views"))
+    .await?;
+```
+
+As you can see this function is `async` and we need to `await`.
+
+But now we have the element, and we will try to click it.
+Thankfully, `views` is a special struct of type `Element` that has functions to interact with the element.
+
+One of those functions is `click()`.
+
+```text
+views.click().await?;
+```
+
+Again, this function is `async` too.
+
+The complete working code looks like this:
+
+```rust
+use appium_client::capabilities::android::AndroidCapabilities;
+use appium_client::capabilities::{AppCapable, AppiumCapability};
+use appium_client::ClientBuilder;
+use appium_client::find::{AppiumFind, By};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut capabilities = AndroidCapabilities::new_uiautomator();
+    capabilities.platform_version("14");
+    capabilities.app("/Users/multicatch/apps/ApiDemos-debug.apk");
+
+    let client = ClientBuilder::native(capabilities)
+        .connect("http://localhost:4723/")
+        .await?;
+
+    let views = client.find_by(By::accessibility_id("Views"))
+        .await?;
+
+    views.click().await?;
+
+    Ok(())
+}
+```
+
+### Different Types Of Locators
+
+If you read [documentation of By](https://multicatch.github.io/appium-client/appium_client/find/enum.By.html#impl-By),
+you could see that there are different types of locators.
+
+Those are:
+* `accessibility_id` - it matches the value of `accessibility id` (the same you see in Appium Inspector),
+* `class_name` - it's the same as `class` in Appium Inspector,
+* `id` - in case of Android, it's the same as `resource-id`; in iOS it's `name`,
+* `uiautomator` - UiAutomator2 allows you to write a piece of Java code with an expression that can be used to locate the element (it can even scroll the screen).
+* `xpath` - it's a special expression for finding nodes in XML. In our case, the XML is the "App Source" you see in Appium Inspector. Appium Inspector also displays XPath expression when you select an element on screen.
+
+In iOS tests you can use almost all of the above (except for `uiautomator`). But there are also some locators that are iOS-only:
+* `name` - matches attribute `name`,
+* `ios_class_chain` - it's a special expression (like XPath), but is specific to XCUITest. It's a faster, but less powerful alternative to XPath.
+* `ios_ns_predicate` - it's another special expression, but searches in a different way ([ios_ns_predicate documentation](https://github.com/appium/appium-xcuitest-driver/blob/master/docs/ios-predicate.md)).
+
+If you're confused how they work, you can always test them out in Appium Inspector.
+
+There's a magnifying glass icon in the top toolbar. 
+It opens a window where you can select a Locator Strategy and the selector.
+
+For example, if I choose `Accessibility ID` and enter `Views`, then I will get only one result.
+The result is, of course, the element that we click in our Rust code.
+
+![](docimg/inspector_views_search.png)
+
+You can see in the above screenshot that I have one result, and when I selected it, "Views" is highlighted.
+Success!
+
+Let's try something else. This time, I'll choose `Class Name` and enter `android.widget.TextView`.
+
+![](docimg/inspector_class_search.png)
+
+Now I have a lot of results. The last one (which I have selected) is "Views".
+
+This kind of locator usually returns a lot of results (you know, screens are a complicated thing and reuse a lot of components).
+But unfortunately it is rarely useful to use `find_by(By::class_name("xyz"))`.
+`find_by` returns only one result, and what I'm looking for is probably further on the list of results.
+How can we make it useful?
+
+Thankfully, instead of using `find_by`, we can just use `find_all_by`, which returns a Vec of Elements.
+
+
+```rust
+use appium_client::capabilities::android::AndroidCapabilities;
+use appium_client::capabilities::{AppCapable, AppiumCapability};
+use appium_client::ClientBuilder;
+use appium_client::find::{AppiumFind, By};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut capabilities = AndroidCapabilities::new_uiautomator();
+    capabilities.platform_version("14");
+    capabilities.app("/Users/multicatch/apps/ApiDemos-debug.apk");
+
+    let client = ClientBuilder::native(capabilities)
+        .connect("http://localhost:4723/")
+        .await?;
+
+    let text_views = client.find_all_by(By::class_name("android.widget.TextView"))
+        .await?;
+
+    for element in text_views {
+        println!("TextView: {}", element.text().await?);
+    }
+
+    Ok(())
+}
+```
+
+This code prints text of all `android.widget.TextView` elements on the screen.
+
+```text
+TextView: API Demos
+TextView: Access'ibility
+TextView: Accessibility
+TextView: Animation
+TextView: App
+TextView: Content
+TextView: Graphics
+TextView: Media
+TextView: NFC
+TextView: OS
+TextView: Preference
+TextView: Text
+TextView: Views
+```
+
+### Entering Text
+
+Let's try simulating keyboard input. 
+We need some kind of form in the app. 
+
+Fortunately, there is one in `Views` > `Auto Complete` > `1. Screen Top`.
+
+Restart the session in Appium Inspector and go through those steps to open the form.
+
+If you clicked those menu items manually in the emulator (or on your device), 
+then refresh source & screenshot using the icon in the top bar in the Inspector.
+
+Or you could select `Views` in Inspector, click the crosshair to tap the element, and then repeat those steps for `Auto Complete` and `1. Screen Top`.
+
+![](docimg/inspector_country.png)
+
+Let's inspect the text input next to the label "Country:". 
+This time, Appium Inspector suggested using `id` or `xpath`.
+This `xpath` looks unnecessarily complicated, so we will stick to `id`.
+
+So based on what we have discovered in the Appium Inspector, 
+we can already see that in our code we will have the following steps:
+
+* `find_by(By::accessibility_id("Views"))` and click it
+* `find_by(By::accessibility_id("Auto Complete"))` and click it
+* `find_by(By::accessibility_id("1. Screen Top"))` and click it
+* `find_by(By::id("io.appium.android.apis:id/edit"))`, click it (focus), enter text
+
+We already know how to click elements. 
+To enter text into a field, we will use `send_keys`.
+
+`send_keys` is a function that you can use with an `Element`. 
+Basically we just need to do `find_by(By).await?.send_keys("blahblah").await?`.
+
+Let's try testing this autocomplete form by entering "fra" (like in "France").
+
+```rust
+use appium_client::capabilities::android::AndroidCapabilities;
+use appium_client::capabilities::{AppCapable, AppiumCapability};
+use appium_client::ClientBuilder;
+use appium_client::find::{AppiumFind, By};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut capabilities = AndroidCapabilities::new_uiautomator();
+    capabilities.platform_version("14");
+    capabilities.app("/Users/multicatch/apps/ApiDemos-debug.apk");
+
+    let client = ClientBuilder::native(capabilities)
+        .connect("http://localhost:4723/")
+        .await?;
+
+    let views = client.find_by(By::accessibility_id("Views"))
+        .await?;
+
+    views.click().await?;
+    
+    client.find_by(By::accessibility_id("Auto Complete"))
+        .await?
+        .click()
+        .await?;
+
+    client.find_by(By::accessibility_id("1. Screen Top"))
+        .await?
+        .click()
+        .await?;
+
+    let country_input = client.find_by(By::id("io.appium.android.apis:id/edit"))
+        .await?;
+    
+    country_input.click()
+        .await?;
+
+    country_input.send_keys("fra")
+        .await?;
+
+    Ok(())
+}
+```
+
+Remember: Don't forget `await`s or your code will be faster than Appium (that's actually a bad thing and you will get errors).
+
+### Going Back And Scrolling
+
+So let's do something more complicated - let's scroll the screen.
+
+It's not as easy as calling `scoll()` or something, because there is no such method.
+
+And why would there be? Scrolling is not as obvious as it looks.
+You can scroll part of an element, or an element inside scrollable element.
+You can scroll vertically, horizontally, diagonally.
+You can scroll by moving your finger 0.5cm on the screen, or by going berserk (you have a very long list and need to get to the bottom).
+
+So to scroll, one must know how a finger moves across the screen.
+That's the whole magic of scrolling. 
+
+We will be simulating a scroll by simulating the following actions:
+* moving your finger above the screen in the initial position,
+* touching the screen,
+* moving the finger (still touching the screen).
+
+But first, let's do something easier. 
+Let's hide the keyboard and go back twice, to a screen with a long list.
+
+Thankfully, it's easier to do than scrolling.
+
+```text
+    client.hide_keyboard().await?;
+
+    client.back().await?;
+
+    client.back().await?;
+```
+
+Ok, now we're ready to do the magic.
+
+First, start by defining something called `TouchActions::new("finger".to_string())`.
+It will represent a sequence of actions we want to simulate with our virtual finger.
+
+To add an action to this sequence, we use `then`. We will create a sequence of three actions:
+* `PointerAction::MoveTo` to move the finger to an initial position,
+* `PointerAction::Down` to touch the screen in this initial position,
+* `PointerAction::MoveTo` to swipe the finger (that is still touching the screen).
+
+```text
+    let swipe_down = TouchActions::new("finger".to_string())
+        // position the finger first
+        .then(PointerAction::MoveTo {
+            duration: Some(Duration::from_millis(0)),
+            x: 400,
+            y: 800,
+        })
+        // THEN touch the screen
+        .then(PointerAction::Down {
+            button: MOUSE_BUTTON_LEFT // believe me, it is not a mouse, but a simple touch
+        })
+        // THEN move the finger through the screen
+        .then(PointerAction::MoveTo {
+            duration: Some(Duration::from_millis(500)),
+            x: 400,
+            y: 100,
+        });
+```
+
+Notice that you can specify duration to each finger movement. 
+So you can move the finger faster or slower.
+And you need to touch the screen with `MOUSE_BUTTON_LEFT` (which is the same as using `0`).
+
+You can adjust `x` and `y` of the sequence depending on the screen of your virtual device.
+
+To perform those actions, you need to submit them to Appium.
+```text
+    client.perform_actions(swipe_down)
+        .await?;
+```
+
+The whole code looks like the following:
+
+```rust
+use std::time::Duration;
+use appium_client::capabilities::android::AndroidCapabilities;
+use appium_client::capabilities::{AppCapable, AppiumCapability};
+use appium_client::ClientBuilder;
+use appium_client::commands::keyboard::HidesKeyboard;
+use appium_client::find::{AppiumFind, By};
+use fantoccini::actions::{InputSource, MOUSE_BUTTON_LEFT, PointerAction, TouchActions};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut capabilities = AndroidCapabilities::new_uiautomator();
+    capabilities.platform_version("14");
+    capabilities.app("/Users/multicatch/apps/ApiDemos-debug.apk");
+
+    let client = ClientBuilder::native(capabilities)
+        .connect("http://localhost:4723/")
+        .await?;
+
+    let views = client.find_by(By::accessibility_id("Views"))
+        .await?;
+
+    views.click().await?;
+
+    client.find_by(By::accessibility_id("Auto Complete"))
+        .await?
+        .click()
+        .await?;
+
+    client.find_by(By::accessibility_id("1. Screen Top"))
+        .await?
+        .click()
+        .await?;
+
+    let country_input = client.find_by(By::id("io.appium.android.apis:id/edit"))
+        .await?;
+
+    country_input.click()
+        .await?;
+
+    country_input.send_keys("fra")
+        .await?;
+
+    client.hide_keyboard().await?;
+
+    client.back().await?;
+
+    client.back().await?;
+
+    let swipe_down = TouchActions::new("finger".to_string())
+        // position the finger first
+        .then(PointerAction::MoveTo {
+            duration: Some(Duration::from_millis(0)),
+            x: 400,
+            y: 800,
+        })
+        // THEN touch the screen
+        .then(PointerAction::Down {
+            button: MOUSE_BUTTON_LEFT // believe me, it is not a mouse, but a simple touch
+        })
+        // THEN move the finger through the screen
+        .then(PointerAction::MoveTo {
+            duration: Some(Duration::from_millis(500)),
+            x: 400,
+            y: 100,
+        });
+
+    client.perform_actions(swipe_down)
+        .await?;
+
+    Ok(())
+}
+```
