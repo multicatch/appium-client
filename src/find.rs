@@ -126,7 +126,7 @@ impl By {
 
     /// Search the app XML source using xpath (not recommended, has performance issues).
     pub fn xpath(query: &str) -> By {
-        By::UiAutomator(query.to_string())
+        By::Xpath(query.to_string())
     }
 
     /// Use the UI Automator API, in particular the UiSelector class to locate elements. (UiAutomator2 only).

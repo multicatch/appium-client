@@ -184,7 +184,7 @@ pub trait UiAutomator2AppCompatible: AppiumCapability {
     ///
     /// By default the value of this capability is the same as for appActivity.
     fn app_wait_package(&mut self, activity: &str) {
-        self.set_str("appWaitPackage", activity);
+        self.set_str("appium:appWaitPackage", activity);
     }
 
     /// Timeout in milliseconds used to wait for the appWaitActivity to launch (default 20000)
@@ -202,7 +202,7 @@ pub trait UiAutomator2AppCompatible: AppiumCapability {
     /// Whether to block until the app under test returns the control to the caller after its activity
     /// has been started by Activity Manager (true, the default value) or to continue the test without waiting for that (false)
     fn app_wait_for_launch(&mut self, value: bool) {
-        self.set_bool("appWaitForLaunch", value);
+        self.set_bool("appium:appWaitForLaunch", value);
     }
 
     /// Always start app forcefully when testing starts.
