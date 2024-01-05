@@ -1,3 +1,4 @@
+//! Device time
 use async_trait::async_trait;
 use fantoccini::error::CmdError;
 use http::Method;
@@ -5,6 +6,7 @@ use serde_json::json;
 use crate::{AndroidClient, AppiumClientTrait, IOSClient};
 use crate::commands::AppiumCommand;
 
+/// Get device time
 #[async_trait]
 pub trait HasDeviceTime : AppiumClientTrait {
 

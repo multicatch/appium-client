@@ -1,3 +1,4 @@
+//! Device orientation and rotation
 use std::fmt::{Display, Formatter};
 use async_trait::async_trait;
 use fantoccini::error::CmdError;
@@ -46,6 +47,7 @@ impl DeviceRotation {
     }
 }
 
+/// Get or set orientation and rotation of device
 #[async_trait]
 pub trait SupportsRotation : AppiumClientTrait {
     async fn orientation(&self) -> Result<Orientation, CmdError> {

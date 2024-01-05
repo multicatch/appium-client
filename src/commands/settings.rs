@@ -1,3 +1,4 @@
+//! Settings API (<https://appium.io/docs/en/2.1/guides/settings/>)
 use std::collections::HashMap;
 use async_trait::async_trait;
 use fantoccini::error::CmdError;
@@ -6,6 +7,7 @@ use serde_json::{json, Map, Value};
 use crate::{AndroidClient, AppiumClientTrait, IOSClient};
 use crate::commands::AppiumCommand;
 
+/// Set or get setting from Settings API (<https://appium.io/docs/en/2.1/guides/settings/>)
 #[async_trait]
 pub trait HasSettings : AppiumClientTrait {
     async fn set_settings(&self, values: Map<String, Value>) -> Result<(), CmdError> {

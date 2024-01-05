@@ -1,3 +1,4 @@
+//! Geolocation
 use async_trait::async_trait;
 use fantoccini::error::CmdError;
 use http::Method;
@@ -21,6 +22,7 @@ impl Location {
     }
 }
 
+/// Retrieve current geolocation (or set it on emulator)
 #[async_trait]
 pub trait SupportsLocation : AppiumClientTrait {
     async fn location(&self) -> Result<Location, CmdError> {
@@ -77,6 +79,7 @@ impl AndroidGeoLocation {
     }
 }
 
+/// Set android geolocation (with extended options)
 #[async_trait]
 pub trait SupportsAndroidLocation : AppiumClientTrait {
     async fn set_android_location(&self, location: AndroidGeoLocation) -> Result<Location, CmdError> {

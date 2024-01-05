@@ -1,3 +1,81 @@
+//! Find API for locating elements on screen
+//!
+//! This API can be used to find elements on screen or in a known parent.
+//!
+//! ## Basic usage
+//! ```no_run
+//!# use appium_client::capabilities::android::AndroidCapabilities;
+//!# use appium_client::capabilities::{AppCapable, UdidCapable, UiAutomator2AppCompatible};
+//!# use appium_client::ClientBuilder;
+//!# use appium_client::find::{AppiumFind, By};
+//!#
+//!# #[tokio::main]
+//!# async fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! // create capabilities & client
+//! let mut capabilities = AndroidCapabilities::new_uiautomator();
+//!# capabilities.udid("emulator-5554");
+//!# capabilities.app("/apps/sample.apk");
+//!# capabilities.app_wait_activity("com.example.AppActivity");
+//!
+//! let client = ClientBuilder::native(capabilities)
+//!     .connect("http://localhost:4723/wd/hub/")
+//!     .await?;
+//!
+//! // locate an element (find it)
+//! let element = client
+//!     .find_by(By::accessibility_id("Click this"))
+//!     .await?;
+//!
+//! // locate all matching elements by given xpath
+//! let elements = client
+//!     .find_all_by(By::xpath("//*[contains(@resource-id, 'test')]"))
+//!     .await?;
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! Notice that if you wish to get only one element (the first match), you can use [AppiumFind::find_by].
+//! If you want all matches on a screen, you use [AppiumFind::find_all_by].
+//!
+//! ## Custom locator strategy
+//!
+//! If none of the options available in [By] work with your driver, then you might use [By::custom_kind] to specify custom location strategy (and search query).
+//!
+//! Using [By::custom_kind] is basically the same as using any other [By] variant, but you need to write more and the compiler won't tell you that you made a typo.
+//!
+//! Some Appium docs on the matter of locators (selectors): <https://appium.github.io/appium.io/docs/en/writing-running-appium/finding-elements/>
+//!
+//! Example:
+//! ```no_run
+//!# use appium_client::capabilities::android::AndroidCapabilities;
+//!# use appium_client::capabilities::{AppCapable, UdidCapable, UiAutomator2AppCompatible};
+//!# use appium_client::ClientBuilder;
+//!# use appium_client::find::{AppiumFind, By};
+//!#
+//!# #[tokio::main]
+//!# async fn main() -> Result<(), Box<dyn std::error::Error>> {
+//!# let mut capabilities = AndroidCapabilities::new_uiautomator();
+//!# capabilities.udid("emulator-5554");
+//!# capabilities.app("/apps/sample.apk");
+//!# capabilities.app_wait_activity("com.example.AppActivity");
+//!#
+//!# let client = ClientBuilder::native(capabilities)
+//!#     .connect("http://localhost:4723/wd/hub/")
+//!#     .await?;
+//!#
+//! // locate an element (find it)
+//! let element = client
+//!     .find_by(By::accessibility_id("Find me"))
+//!     .await?;
+//!
+//! // do the same, but more explicitly
+//! let element = client
+//!     .find_by(By::custom_kind("accessibility id", "Find me"))
+//!     .await?;
+//! # Ok(())
+//! # }
+//! ```
+//!
 use std::collections::HashMap;
 use fantoccini::elements::{Element, ElementRef};
 use fantoccini::Client;
@@ -7,6 +85,10 @@ use serde_derive::Serialize;
 use crate::commands::AppiumCommand;
 use async_trait::async_trait;
 
+/// Locators supported by Appium
+///
+/// If you wish to use your very own locator (e.g. something I didn't implement in this enum),
+/// just use [By::CustomKind].
 #[derive(Debug, PartialEq, Clone)]
 pub enum By {
     Id(String),
@@ -22,6 +104,7 @@ pub enum By {
     ClassName(String),
     Image(String),
     Custom(String),
+    CustomKind(String, String)
 }
 
 #[derive(Debug, PartialEq, Serialize, Clone)]
@@ -43,13 +126,15 @@ impl By {
 
     /// Search the app XML source using xpath (not recommended, has performance issues).
     pub fn xpath(query: &str) -> By {
-        By::UiAutomator(query.to_string())
+        By::Xpath(query.to_string())
     }
 
     /// Use the UI Automator API, in particular the UiSelector class to locate elements. (UiAutomator2 only).
     ///
     /// In Appium you send the Java code, as a string, to the server, which executes it in the application’s environment,
     /// returning the element or elements.
+    /// 
+    /// See <https://developer.android.com/reference/androidx/test/uiautomator/UiSelector>
     pub fn uiautomator(query: &str) -> By {
         By::UiAutomator(query.to_string())
     }
@@ -103,28 +188,36 @@ impl By {
     pub fn custom(query: &str) -> By {
         By::Custom(query.to_string())
     }
+
+    /// A locator for non-standard locators
+    ///
+    /// You can define what type of locator to use, so you're free to use anything here.
+    pub fn custom_kind(using: &str, value: &str) -> By {
+        By::CustomKind(using.to_string(), value.to_string())
+    }
 }
 
 impl From<By> for LocatorParameters {
     fn from(val: By) -> Self {
         let (using, value) = match val {
-            By::Id(value) => ("id", value),
-            By::Name(value) => ("name", value),
-            By::Xpath(value) => ("xpath", value),
-            By::UiAutomator(value) => ("-android uiautomator", value),
-            By::AndroidDataMatcher(value) => ("-android datamatcher", value),
-            By::AndroidViewMatcher(value) => ("-android viewmatcher", value),
-            By::AndroidViewTag(value) => ("-android viewtag", value),
-            By::IosClassChain(value) => ("-ios class chain", value),
-            By::IosNsPredicate(value) => ("-ios predicate string", value),
-            By::AccessibilityId(value) => ("accessibility id", value),
-            By::Image(value) => ("-image", value),
-            By::ClassName(value) => ("class name", value),
-            By::Custom(value) => ("-custom", value),
+            By::Id(value) => ("id".to_string(), value),
+            By::Name(value) => ("name".to_string(), value),
+            By::Xpath(value) => ("xpath".to_string(), value),
+            By::UiAutomator(value) => ("-android uiautomator".to_string(), value),
+            By::AndroidDataMatcher(value) => ("-android datamatcher".to_string(), value),
+            By::AndroidViewMatcher(value) => ("-android viewmatcher".to_string(), value),
+            By::AndroidViewTag(value) => ("-android viewtag".to_string(), value),
+            By::IosClassChain(value) => ("-ios class chain".to_string(), value),
+            By::IosNsPredicate(value) => ("-ios predicate string".to_string(), value),
+            By::AccessibilityId(value) => ("accessibility id".to_string(), value),
+            By::Image(value) => ("-image".to_string(), value),
+            By::ClassName(value) => ("class name".to_string(), value),
+            By::Custom(value) => ("-custom".to_string(), value),
+            By::CustomKind(kind, value) => (kind, value)
         };
 
         LocatorParameters {
-            using: using.to_string(),
+            using,
             value
         }
     }

@@ -1,3 +1,4 @@
+//! Device authentication
 use async_trait::async_trait;
 use fantoccini::error::CmdError;
 use http::Method;
@@ -5,6 +6,7 @@ use serde_json::json;
 use crate::{AndroidClient, AppiumClientTrait, IOSClient};
 use crate::commands::AppiumCommand;
 
+/// Finger authentication (Android authentication)
 #[async_trait]
 pub trait AuthenticatesByFinger : AppiumClientTrait {
     async fn use_finger_print(&self, id: u8) -> Result<(), CmdError> {
@@ -23,6 +25,7 @@ pub trait AuthenticatesByFinger : AppiumClientTrait {
 #[async_trait]
 impl AuthenticatesByFinger for AndroidClient {}
 
+/// TouchID (iPhone authentication)
 #[async_trait]
 pub trait PerformsTouchID : AppiumClientTrait {
     /// Simulate touchId event.

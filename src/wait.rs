@@ -1,3 +1,99 @@
+//! Wait API for waiting for elements to appear on screen
+//!
+//! It's basically like [crate::find], but does not return results immediately.
+//! If the element is not on screen, then it tries to locate it again in intervals until it appears.
+//!
+//! Wait has two parameters: interval and timeout.
+//!
+//! **Interval** is how often to check if it appeared on screen.
+//! **Timeout** is how much time do you want to wait (max).
+//!
+//! If Appium finds the element before the timeout is exceeded, then it is returned immediately.
+//! If not, then the client will query Appium again after a given interval.
+//!
+//! ## Basic usage
+//! ```no_run
+//! use appium_client::capabilities::android::AndroidCapabilities;
+//!# use appium_client::capabilities::{AppCapable, UdidCapable, UiAutomator2AppCompatible};
+//! use appium_client::ClientBuilder;
+//! use appium_client::find::{AppiumFind, By};
+//!
+//!# #[tokio::main]
+//!# async fn main() -> Result<(), Box<dyn std::error::Error>> {
+//!# // create capabilities
+//!# use appium_client::wait::AppiumWait;
+//! let mut capabilities = AndroidCapabilities::new_uiautomator();
+//!# capabilities.udid("emulator-5554");
+//!# capabilities.app("/apps/sample.apk");
+//!# capabilities.app_wait_activity("com.example.AppActivity");
+//!#
+//! // create the client
+//! let client = ClientBuilder::native(capabilities)
+//!     .connect("http://localhost:4723/wd/hub/")
+//!     .await?;
+//!
+//! // wait until element appears
+//! let element = client
+//!     .appium_wait()
+//!     .for_element(By::accessibility_id("Wait for me"))
+//!     .await?;
+//!
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! ## Tweaking the interval and timeout
+//! To change those parameters, use [Wait::check_every] (for changing the interval) and [Wait::at_most] (the timeout).
+//! See the documentation of those functions for more info.
+//!
+//! ```no_run
+//! use appium_client::capabilities::android::AndroidCapabilities;
+//!# use appium_client::capabilities::{AppCapable, UdidCapable, UiAutomator2AppCompatible};
+//! use appium_client::ClientBuilder;
+//! use appium_client::find::{AppiumFind, By};
+//!
+//!# #[tokio::main]
+//!# async fn main() -> Result<(), Box<dyn std::error::Error>> {
+//!# use std::time::Duration;
+//! // create capabilities
+//!# use appium_client::wait::AppiumWait;
+//! let mut capabilities = AndroidCapabilities::new_uiautomator();
+//!# capabilities.udid("emulator-5554");
+//!# capabilities.app("/apps/sample.apk");
+//!# capabilities.app_wait_activity("com.example.AppActivity");
+//!#
+//! // create the client
+//! let client = ClientBuilder::native(capabilities)
+//!     .connect("http://localhost:4723/wd/hub/")
+//!     .await?;
+//!
+//! // wait 1 s until element appears (and check every 250ms if it's appeared)
+//! let element = client
+//!     .appium_wait()
+//!     .check_every(Duration::from_millis(250))
+//!     .at_most(Duration::from_secs(1))
+//!     .for_element(By::accessibility_id("Wait for me"))
+//!     .await?;
+//!
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! Waiting for a list of elements
+//! Instead of [Wait::for_element], there is [Wait::for_elements] (notice the **s** at the end).
+//! The second method returns a Vec of elements instead of one elements.
+//!
+//! When you use the second function, the wait works the same.
+//! It still waits in the same way, and waits for the element to appear.
+//!
+//! The only difference is that after AT LEAST ONE matching elements has appeared, the wait is over.
+//! You get the result, and the result is a Vec of all matching elements.
+//!
+//! That means - if all elements appeared simultaneously, then you will get all elements.
+//! This method will not wait for all possible elements to appear.
+//! So if some elements appear with a delay - then they might not be there.
+//! This method returns immediately after at least one match.
+//!
 use std::time::Duration;
 use fantoccini::Client;
 use fantoccini::elements::Element;
@@ -20,6 +116,7 @@ impl AppiumWait for Client {
     }
 }
 
+/// Wait parameters
 #[derive(Debug)]
 pub struct Wait<'c> {
     client: &'c Client,

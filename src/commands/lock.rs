@@ -1,3 +1,4 @@
+//! Lock and unlock the device
 use async_trait::async_trait;
 use fantoccini::error::CmdError;
 use http::Method;
@@ -5,6 +6,7 @@ use serde_json::json;
 use crate::{AndroidClient, AppiumClientTrait, IOSClient};
 use crate::commands::AppiumCommand;
 
+/// Lock device
 #[async_trait]
 pub trait LocksDevice: AppiumClientTrait {
 
@@ -20,6 +22,7 @@ pub trait LocksDevice: AppiumClientTrait {
     }
 }
 
+/// Unlock device
 #[async_trait]
 pub trait UnlocksDevice: AppiumClientTrait {
 

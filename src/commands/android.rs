@@ -1,3 +1,4 @@
+//! Android-specific features
 use std::collections::HashMap;
 use async_trait::async_trait;
 use fantoccini::elements::Element;
@@ -21,6 +22,7 @@ pub struct AndroidActivity {
     pub stop_app: bool,
 }
 
+/// Start or check Android actitivies
 #[async_trait]
 pub trait StartsActivity: AppiumClientTrait {
     async fn start_activity(&self, activity: AndroidActivity) -> Result<(), CmdError> {
@@ -66,7 +68,7 @@ pub trait StartsActivity: AppiumClientTrait {
 #[async_trait]
 impl StartsActivity for AndroidClient {}
 
-
+/// Android device details
 #[async_trait]
 pub trait HasAndroidDeviceDetails :AppiumClientTrait {
     async fn display_density(&self) -> Result<u64, CmdError> {
@@ -93,6 +95,7 @@ pub trait HasAndroidDeviceDetails :AppiumClientTrait {
 #[async_trait]
 impl HasAndroidDeviceDetails for AndroidClient {}
 
+/// Device traits that Appium is able to read
 #[async_trait]
 pub trait HasSupportedPerformanceDataType : AppiumClientTrait {
     async fn supported_performance_data_type(&self) -> Result<Vec<String>, CmdError> {
@@ -168,6 +171,7 @@ pub enum NetworkSpeed {
     FULL,
 }
 
+/// Special Android emulator commands like "send SMS"
 #[async_trait]
 pub trait SupportsSpecialEmulatorCommands : AppiumClientTrait {
 
@@ -275,6 +279,7 @@ pub trait SupportsSpecialEmulatorCommands : AppiumClientTrait {
 #[async_trait]
 impl SupportsSpecialEmulatorCommands for AndroidClient {}
 
+/// Chrome DevTools protocol commands (Chrome and webview)
 #[async_trait]
 pub trait ExecutesCDP : AppiumClientTrait {
     async fn execute_cdp_command(&self, command: &str, params: Option<HashMap<String, Value>>) -> Result<HashMap<String, Value>, CmdError> {
@@ -294,6 +299,7 @@ pub trait ExecutesCDP : AppiumClientTrait {
 #[async_trait]
 impl ExecutesCDP for AndroidClient {}
 
+/// Replacing element value (instead of retyping into field)
 #[async_trait]
 pub trait CanReplaceValue: AppiumClientTrait {
     async fn replace_value(&self, element: &Element, value: &str) -> Result<(), CmdError> {

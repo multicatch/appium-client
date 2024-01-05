@@ -1,3 +1,4 @@
+//! App strings (localized text from app)
 use std::collections::HashMap;
 use async_trait::async_trait;
 use fantoccini::error::CmdError;
@@ -6,6 +7,7 @@ use serde_json::json;
 use crate::{AndroidClient, AppiumClientTrait, IOSClient};
 use crate::commands::AppiumCommand;
 
+/// Retrieve localized app strings (text used in app)
 #[async_trait]
 pub trait HasAppStrings : AppiumClientTrait {
     async fn app_strings_default_lang(&self) -> Result<HashMap<String, String>, CmdError> {

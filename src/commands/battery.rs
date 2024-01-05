@@ -1,3 +1,4 @@
+//! Battery info
 use std::collections::HashMap;
 use std::marker::PhantomData;
 use std::ops::Deref;
@@ -9,6 +10,7 @@ use crate::capabilities::android::AndroidCapabilities;
 use crate::capabilities::AppiumCapability;
 use crate::capabilities::ios::IOSCapabilities;
 
+/// Device battery level and state
 #[async_trait]
 pub trait HasBattery<Caps>: AppiumClientTrait
     where Caps: AppiumCapability
