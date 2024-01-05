@@ -273,6 +273,6 @@ Remember that the swipe will "pull" the screen, so you need to swipe down to "pu
 
 ## Examples
 
-- [See basic example here.](examples/simple.rs)
+- [See find_by example here.](examples/find_by.rs)
 - [Scrolling example here.](examples/scroll.rs)
 

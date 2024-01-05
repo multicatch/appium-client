@@ -133,6 +133,8 @@ impl By {
     ///
     /// In Appium you send the Java code, as a string, to the server, which executes it in the application’s environment,
     /// returning the element or elements.
+    /// 
+    /// See <https://developer.android.com/reference/androidx/test/uiautomator/UiSelector>
     pub fn uiautomator(query: &str) -> By {
         By::UiAutomator(query.to_string())
     }

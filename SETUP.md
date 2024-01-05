@@ -486,7 +486,7 @@ Those are:
 * `accessibility_id` - it matches the value of `accessibility id` (the same you see in Appium Inspector),
 * `class_name` - it's the same as `class` in Appium Inspector,
 * `id` - in case of Android, it's the same as `resource-id`; in iOS it's `name`,
-* `uiautomator` - UiAutomator2 allows you to write a piece of Java code with an expression that can be used to locate the element (it can even scroll the screen).
+* `uiautomator` - UiAutomator2 allows you to write a piece of Java code with an expression that can be used to locate the element (it can even scroll the screen, [documentation](https://developer.android.com/reference/androidx/test/uiautomator/UiSelector)).
 * `xpath` - it's a special expression for finding nodes in XML. In our case, the XML is the "App Source" you see in Appium Inspector. Appium Inspector also displays XPath expression when you select an element on screen.
 
 In iOS tests you can use almost all of the above (except for `uiautomator`). But there are also some locators that are iOS-only:
