@@ -8,6 +8,7 @@ license = "GPL-3.0-or-later"
 homepage = "https://github.com/multicatch/appium-client"
 repository = "https://github.com/multicatch/appium-client"
 documentation = "https://multicatch.github.io/appium-client/appium_client/"
+exclude = ["docimg"]
 
 [features]
 default = ["native-tls"]
