@@ -54,20 +54,18 @@ You also need to connect a device (or an emulator) to the machine that runs the 
 If you have set up Appium properly, then you can use this library to connect to the server and control the device.
 
 To connect to the Appium Server, you need to create an instance of a `Client`.
-To do so, create appropriate [capabilities](https://appium.io/docs/en/2.1/guides/caps/) (e.g. `AndroidCapabilities::new()`) and then supply then to a `ClientBuilder`.
+To do so, create appropriate [capabilities](https://appium.io/docs/en/2.1/guides/caps/) (e.g. `AndroidCapabilities::new_uiautomator()`) and then supply then to a `ClientBuilder`.
 
 You need a Tokio async runtime for it to work properly.
 
 ```rust
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut capabilities = AndroidCapabilities::new();
-    capabilities.udid("emulator-5554");
-    capabilities.app("/apps/sample.apk");
-    capabilities.app_wait_activity("com.example.AppActivity");
+    let mut capabilities = AndroidCapabilities::new_uiautomator();
+    capabilities.app("https://github.com/appium/android-apidemos/releases/download/v3.1.0/ApiDemos-debug.apk");
 
     let client = ClientBuilder::native(capabilities)
-        .connect("http://localhost:4723/wd/hub/")
+        .connect("http://localhost:4723/")
         .await?;
 
     // now you can start testing
@@ -127,13 +125,11 @@ use appium_client::capabilities::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut capabilities = AndroidCapabilities::new();
-    capabilities.udid("emulator-5554");
-    capabilities.app("/apps/sample.apk");
-    capabilities.app_wait_activity("com.example.AppActivity");
+    let mut capabilities = AndroidCapabilities::new_uiautomator();
+    capabilities.app("https://github.com/appium/android-apidemos/releases/download/v3.1.0/ApiDemos-debug.apk");
 
     let client = ClientBuilder::native(capabilities)
-        .connect("http://localhost:4723/wd/hub/")
+        .connect("http://localhost:4723/")
         .await?;
     
     Ok(())
