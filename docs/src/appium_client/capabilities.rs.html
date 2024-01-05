@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/capabilities.rs`."><title>capabilities.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="appium_client" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0 (5680fa18f 2023-08-23)" data-channel="1.72.0" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../appium_client/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/capabilities.rs`."><title>capabilities.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="appium_client" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0 (82e1608df 2023-12-21)" data-channel="1.75.0" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-9dd44ab47b99a0fb.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -186,192 +186,534 @@
 <a href="#186" id="186">186</a>
 <a href="#187" id="187">187</a>
 <a href="#188" id="188">188</a>
-</pre></div><pre class="rust"><code><span class="kw">pub mod </span>ios;
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
+<a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
+<a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
+<a href="#196" id="196">196</a>
+<a href="#197" id="197">197</a>
+<a href="#198" id="198">198</a>
+<a href="#199" id="199">199</a>
+<a href="#200" id="200">200</a>
+<a href="#201" id="201">201</a>
+<a href="#202" id="202">202</a>
+<a href="#203" id="203">203</a>
+<a href="#204" id="204">204</a>
+<a href="#205" id="205">205</a>
+<a href="#206" id="206">206</a>
+<a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
+<a href="#235" id="235">235</a>
+<a href="#236" id="236">236</a>
+<a href="#237" id="237">237</a>
+<a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a>
+<a href="#240" id="240">240</a>
+<a href="#241" id="241">241</a>
+<a href="#242" id="242">242</a>
+<a href="#243" id="243">243</a>
+<a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
+<a href="#255" id="255">255</a>
+<a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a>
+<a href="#259" id="259">259</a>
+<a href="#260" id="260">260</a>
+<a href="#261" id="261">261</a>
+<a href="#262" id="262">262</a>
+<a href="#263" id="263">263</a>
+<a href="#264" id="264">264</a>
+<a href="#265" id="265">265</a>
+<a href="#266" id="266">266</a>
+<a href="#267" id="267">267</a>
+<a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
+<a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
+<a href="#339" id="339">339</a>
+<a href="#340" id="340">340</a>
+<a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+</pre></div><pre class="rust"><code><span class="doccomment">//! A set of parameters used to start an Appium session.
+//!
+//! ## What are capabilities?
+//! The information in the set is used to describe what sort of &quot;capabilities&quot; you want your session to have,
+//! for example, a certain mobile operating system or a certain version of a device.
+//!
+//! When you start your Appium session, your Appium client will include the set of capabilities
+//! you&#39;ve defined as an object in the JSON-formatted body of the request.
+//!
+//! Capabilities are represented as key-value pairs, with values allowed to be any valid JSON type, including other objects.
+//! Appium will then examine the capabilities and make sure that it can satisfy them before proceeding to start the session and
+//! return an ID representing the session to your client library.
+//!
+//! See also &lt;https://appium.io/docs/en/2.1/guides/caps/&gt;.
+//!
+//! ## Platform-specific capabilities
+//! You can create capabilities to pass to Appium sercer by using either [android::AndroidCapabilities] or [ios::IOSCapabilities].
+//!
+//! For example, if you wish to use UiAutomator2 as a driver for Android tests, you can write:
+//! ```rust
+//! use appium_client::capabilities::android::AndroidCapabilities;
+//! use appium_client::capabilities::{AppCapable, AppiumCapability, UdidCapable, UiAutomator2AppCompatible};
+//!
+//! let mut capabilities = AndroidCapabilities::new_uiautomator();
+//! capabilities.udid(&quot;emulator-5554&quot;);  // This capability selects the device you wish to run test on
+//! capabilities.app(&quot;/apps/sample.apk&quot;); // This is a path to apk on your computer
+//! capabilities.app_wait_activity(&quot;com.example.AppActivity&quot;); // This is an activity of a home screen of the app.
+//!
+//! // If you wish to specify appium capabilities manually (without predefined methods),
+//! // then use methods like set_bool, set_str, set_number
+//! capabilities.set_bool(&quot;appium:noReset&quot;, true);
+//! ```
+//!
+//! ## Blank capabilities
+//! To use blank capabilities (without any predefined methods for ease of configuration), use [empty::EmptyCapabilities].
+//! [empty::EmptyCapabilities] lets you configure Appium for any driver that was not implemented out of the box.
+//!
+//! Note that you will loose many built in features for Android and iOS, basically [empty::EmptyCapabilities] requires
+//! that you setup everything by yourself (including some Appium commands).
+
+</span><span class="kw">pub mod </span>ios;
 <span class="kw">pub mod </span>automation;
 <span class="kw">pub mod </span>android;
+<span class="kw">pub mod </span>empty;
 
 <span class="kw">use </span>std::ops::{Deref, DerefMut};
 <span class="kw">use </span>std::time::Duration;
 <span class="kw">use </span>fantoccini::wd::Capabilities;
 <span class="kw">use </span>serde_json::{Number, Value};
 
-<span class="doccomment">/// Extensions to easily define capabilities for Appium driver
+<span class="doccomment">/// Extensions to easily define capabilities for Appium driver. See &lt;https://appium.io/docs/en/2.1/guides/caps/&gt;.
 </span><span class="kw">pub trait </span>AppiumCapability
     <span class="kw">where </span><span class="self">Self</span>: Deref&lt;Target=Capabilities&gt;,
           <span class="self">Self</span>: DerefMut&lt;Target=Capabilities&gt; {
 
-    <span class="doccomment">/// Set the automation driver to use.
+    <span class="doccomment">/// Set the automation driver to use (the engine for tests, eg. XCuiTest for iOS).
     /// 
     /// Appium usually autoselects the driver based on platform, but you choose the preferred driver.
     /// See [automation] for possible values.
     </span><span class="kw">fn </span>automation_name(<span class="kw-2">&amp;mut </span><span class="self">self</span>, automation_name: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;automationName&quot;</span>, automation_name);
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:automationName&quot;</span>, automation_name);
     }
 
-    <span class="kw">fn </span>platform_version(<span class="kw-2">&amp;mut </span><span class="self">self</span>, version: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;platformVersion&quot;</span>, version);
+    <span class="doccomment">/// The version of a platform, e.g., for iOS, &quot;16.0&quot;
+    </span><span class="kw">fn </span>platform_version(<span class="kw-2">&amp;mut </span><span class="self">self</span>, version: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:platformVersion&quot;</span>, version);
     }
 
-    <span class="kw">fn </span>device_name(<span class="kw-2">&amp;mut </span><span class="self">self</span>, device_name: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;deviceName&quot;</span>, device_name);
+    <span class="doccomment">/// The name of a particular device to automate.
+    ///
+    /// For example &quot;iPhone 14&quot;.
+    /// Currently only actually useful for specifying iOS simulators,
+    /// since in other situations it&#39;s typically recommended to use a specific device
+    /// id via the `appium:udid` capability.
+    </span><span class="kw">fn </span>device_name(<span class="kw-2">&amp;mut </span><span class="self">self</span>, device_name: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:deviceName&quot;</span>, device_name);
     }
 
-    <span class="kw">fn </span>set_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span>str, value: <span class="kw-2">&amp;</span>str) {
+    <span class="doccomment">/// Sets a string capability.
+    ///
+    /// For example `set_str(&quot;appium:deviceName&quot;, &quot;iPhone 14&quot;)`.
+    </span><span class="kw">fn </span>set_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span>str, value: <span class="kw-2">&amp;</span>str) {
         <span class="self">self</span>.insert(name.to_string(), Value::String(value.to_string()));
     }
 
-    <span class="kw">fn </span>set_number(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span>str, value: Number) {
+    <span class="doccomment">/// Sets a number capability.
+    ///
+    /// For example `set_number(&quot;appium:newCommandTimeout&quot;, Number::from(120u64))`.
+    </span><span class="kw">fn </span>set_number(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span>str, value: Number) {
         <span class="self">self</span>.insert(name.to_string(), Value::Number(value));
     }
 
-    <span class="kw">fn </span>set_bool(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span>str, value: bool) {
+    <span class="doccomment">/// Sets a boolean capability.
+    ///
+    /// For example `set_bool(&quot;appium:noReset&quot;, true)`
+    </span><span class="kw">fn </span>set_bool(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span>str, value: bool) {
         <span class="self">self</span>.insert(name.to_string(), Value::Bool(value));
     }
 }
 
-<span class="kw">pub trait </span>UdidCapable: AppiumCapability {
-    <span class="kw">fn </span>udid(<span class="kw-2">&amp;mut </span><span class="self">self</span>, udid: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;udid&quot;</span>, udid);
+<span class="doccomment">/// Capabilities for drivers that are used to run test on a device.
+</span><span class="kw">pub trait </span>UdidCapable: AppiumCapability {
+    <span class="doccomment">/// Device id.
+    ///
+    /// Android id can be retrieved by using ADB (`adb devices`).
+    /// For iOS, it&#39;s the phone&#39;s serial number.
+    </span><span class="kw">fn </span>udid(<span class="kw-2">&amp;mut </span><span class="self">self</span>, udid: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:udid&quot;</span>, udid);
     }
 }
 
-<span class="kw">pub trait </span>AppCapable: AppiumCapability {
-    <span class="kw">fn </span>app(<span class="kw-2">&amp;mut </span><span class="self">self</span>, app_path: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;app&quot;</span>, app_path);
+<span class="doccomment">/// Capabilities for drivers that are used to run an app.
+</span><span class="kw">pub trait </span>AppCapable: AppiumCapability {
+    <span class="doccomment">/// The path to an installable application.
+    </span><span class="kw">fn </span>app(<span class="kw-2">&amp;mut </span><span class="self">self</span>, app_path: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:app&quot;</span>, app_path);
     }
 
-    <span class="kw">fn </span>other_apps(<span class="kw-2">&amp;mut </span><span class="self">self</span>, paths: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>str]) {
+    <span class="doccomment">/// App or list of apps (as a JSON array) to install prior to running tests.
+    ///
+    /// Note that it will not work with `automationName` of `Espresso` and iOS real devices
+    </span><span class="kw">fn </span>other_apps(<span class="kw-2">&amp;mut </span><span class="self">self</span>, paths: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>str]) {
         <span class="kw">let </span>paths = paths.iter()
             .map(|p| Value::String(p.to_string()))
             .collect();
 
-        <span class="self">self</span>.insert(<span class="string">&quot;otherApps&quot;</span>.to_string(), Value::Array(paths));
+        <span class="self">self</span>.insert(<span class="string">&quot;appium:otherApps&quot;</span>.to_string(), Value::Array(paths));
     }
 
-    <span class="kw">fn </span>no_reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, no_reset: bool) {
-        <span class="self">self</span>.set_bool(<span class="string">&quot;noReset&quot;</span>, no_reset);
+    <span class="doccomment">/// Don&#39;t reset app state before this session.
+    ///
+    /// &quot;Reset&quot; means to delete app data (like a fresh install).
+    /// If true, instruct an Appium driver to avoid its usual reset logic during session start and cleanup (default false).
+    </span><span class="kw">fn </span>no_reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, no_reset: bool) {
+        <span class="self">self</span>.set_bool(<span class="string">&quot;appium:noReset&quot;</span>, no_reset);
     }
 
-    <span class="kw">fn </span>full_reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, full_reset: bool) {
-        <span class="self">self</span>.set_bool(<span class="string">&quot;fullReset&quot;</span>, full_reset);
+    <span class="doccomment">/// Perform a complete reset.
+    ///
+    /// &quot;Complete reset&quot; usually means a reinstall.
+    /// If true, instruct an Appium driver to augment its usual reset logic with additional steps to ensure maximum environmental reproducibility (default false)
+    </span><span class="kw">fn </span>full_reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, full_reset: bool) {
+        <span class="self">self</span>.set_bool(<span class="string">&quot;appium:fullReset&quot;</span>, full_reset);
     }
 
-    <span class="kw">fn </span>print_page_source_on_find_failure(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
-        <span class="self">self</span>.set_bool(<span class="string">&quot;printPageSourceOnFindFailure&quot;</span>, value);
-    }
-}
-
-<span class="kw">pub trait </span>UiAutomator2AppCompatible: AppiumCapability {
-    <span class="kw">fn </span>app_activity(<span class="kw-2">&amp;mut </span><span class="self">self</span>, activity: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;appActivity&quot;</span>, activity);
-    }
-
-    <span class="kw">fn </span>app_package(<span class="kw-2">&amp;mut </span><span class="self">self</span>, activity: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;appPackage&quot;</span>, activity);
-    }
-
-    <span class="kw">fn </span>app_wait_activity(<span class="kw-2">&amp;mut </span><span class="self">self</span>, activity: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;appWaitActivity&quot;</span>, activity);
-    }
-
-    <span class="kw">fn </span>app_wait_package(<span class="kw-2">&amp;mut </span><span class="self">self</span>, activity: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;appWaitPackage&quot;</span>, activity);
-    }
-
-    <span class="kw">fn </span>app_wait_duration(<span class="kw-2">&amp;mut </span><span class="self">self</span>, duration: Duration) {
-        <span class="self">self</span>.set_number(<span class="string">&quot;appWaitDuration&quot;</span>, Number::from(duration.as_millis() <span class="kw">as </span>u64));
-    }
-
-    <span class="kw">fn </span>android_install_timeout(<span class="kw-2">&amp;mut </span><span class="self">self</span>, duration: Duration) {
-        <span class="self">self</span>.set_number(<span class="string">&quot;androidInstallTimeout&quot;</span>, Number::from(duration.as_millis() <span class="kw">as </span>u64));
-    }
-
-    <span class="kw">fn </span>app_wait_for_launch(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
-        <span class="self">self</span>.set_bool(<span class="string">&quot;appWaitForLaunch&quot;</span>, value);
-    }
-
-    <span class="kw">fn </span>force_app_launch(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
-        <span class="self">self</span>.set_bool(<span class="string">&quot;forceAppLaunch&quot;</span>, value)
-    }
-
-    <span class="kw">fn </span>auto_launch(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
-        <span class="self">self</span>.set_bool(<span class="string">&quot;autoLaunch&quot;</span>, value)
-    }
-
-    <span class="kw">fn </span>intent_category(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;intentCategory&quot;</span>, value);
-    }
-
-    <span class="kw">fn </span>intent_action(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;intentAction&quot;</span>, value);
-    }
-
-    <span class="kw">fn </span>intent_flags(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;intentFlags&quot;</span>, value);
-    }
-
-    <span class="kw">fn </span>optional_intent_arguments(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;optionalIntentArguments&quot;</span>, value);
-    }
-
-    <span class="kw">fn </span>dont_stop_app_on_reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
-        <span class="self">self</span>.set_bool(<span class="string">&quot;dontStopAppOnReset&quot;</span>, value);
-    }
-
-    <span class="kw">fn </span>uninstall_other_packages(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;uninstallOtherPackages&quot;</span>, value);
-    }
-
-    <span class="kw">fn </span>remote_apps_cache_limit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: u64) {
-        <span class="self">self</span>.set_number(<span class="string">&quot;remoteAppsCacheLimit&quot;</span>, Number::from(value));
-    }
-
-    <span class="kw">fn </span>allow_test_packages(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
-        <span class="self">self</span>.set_bool(<span class="string">&quot;allowTestPackages&quot;</span>, value);
-    }
-
-    <span class="kw">fn </span>enforce_app_install(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
-        <span class="self">self</span>.set_bool(<span class="string">&quot;enforceAppInstall&quot;</span>, value);
+    <span class="doccomment">/// When a find operation fails, print the current page source. Defaults to false.
+    ///
+    /// When the element you&#39;re looking for is not found on screen, then this setting will print DOM
+    /// of the visible app screen.
+    /// This DOM can be further inspected to check if the locator is correct, or if the correct page is displayed.
+    </span><span class="kw">fn </span>print_page_source_on_find_failure(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
+        <span class="self">self</span>.set_bool(<span class="string">&quot;appium:printPageSourceOnFindFailure&quot;</span>, value);
     }
 }
 
-<span class="kw">pub trait </span>AppiumSettingsCapable: AppiumCapability {
+<span class="doccomment">/// Capabilities for UiAutomator2 (Android).
+</span><span class="kw">pub trait </span>UiAutomator2AppCompatible: AppiumCapability {
+    <span class="doccomment">/// Activity name for the Android activity you want to launch from your package.
+    ///
+    /// This often needs to be preceded by a `.` (a dot, e.g., `.MainActivity` instead of `MainActivity`).
+    /// By default this capability is received from the package manifest.
+    </span><span class="kw">fn </span>app_activity(<span class="kw-2">&amp;mut </span><span class="self">self</span>, activity: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:appActivity&quot;</span>, activity);
+    }
+
+    <span class="doccomment">/// Java package of the Android app you want to run.
+    ///
+    /// By default this capability is received from the package manifest.
+    </span><span class="kw">fn </span>app_package(<span class="kw-2">&amp;mut </span><span class="self">self</span>, activity: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:appPackage&quot;</span>, activity);
+    }
+
+    <span class="doccomment">/// Activity name/names, comma separated, for the Android activity you want to wait for.
+    ///
+    /// By default the value of this capability is the same as for appActivity.
+    /// You must set it to the very first focused application activity name in case it is different
+    /// from the one which is set as appActivity if your capability has `appActivity` and `appPackage`.
+    /// You can also use wildcards (*).
+    </span><span class="kw">fn </span>app_wait_activity(<span class="kw-2">&amp;mut </span><span class="self">self</span>, activity: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:appWaitActivity&quot;</span>, activity);
+    }
+
+    <span class="doccomment">/// Java package of the Android app you want to wait for.
+    ///
+    /// By default the value of this capability is the same as for appActivity.
+    </span><span class="kw">fn </span>app_wait_package(<span class="kw-2">&amp;mut </span><span class="self">self</span>, activity: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:appWaitPackage&quot;</span>, activity);
+    }
+
+    <span class="doccomment">/// Timeout in milliseconds used to wait for the appWaitActivity to launch (default 20000)
+    </span><span class="kw">fn </span>app_wait_duration(<span class="kw-2">&amp;mut </span><span class="self">self</span>, duration: Duration) {
+        <span class="self">self</span>.set_number(<span class="string">&quot;appium:appWaitDuration&quot;</span>, Number::from(duration.as_millis() <span class="kw">as </span>u64));
+    }
+
+    <span class="doccomment">/// Timeout in milliseconds used to wait for an apk to install to the device. Defaults to 90000
+    </span><span class="kw">fn </span>android_install_timeout(<span class="kw-2">&amp;mut </span><span class="self">self</span>, duration: Duration) {
+        <span class="self">self</span>.set_number(<span class="string">&quot;appium:androidInstallTimeout&quot;</span>, Number::from(duration.as_millis() <span class="kw">as </span>u64));
+    }
+
+    <span class="doccomment">/// Block until app starts.
+    ///
+    /// Whether to block until the app under test returns the control to the caller after its activity
+    /// has been started by Activity Manager (true, the default value) or to continue the test without waiting for that (false)
+    </span><span class="kw">fn </span>app_wait_for_launch(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
+        <span class="self">self</span>.set_bool(<span class="string">&quot;appium:appWaitForLaunch&quot;</span>, value);
+    }
+
+    <span class="doccomment">/// Always start app forcefully when testing starts.
+    ///
+    /// Set it to true if you want the application under test to be always forcefully
+    /// restarted on session startup even if appium:noReset is true,
+    /// and the app was already running. If noReset is falsy, then the app under test is going
+    /// to be restarted if either this capability set to true or appium:dontStopAppOnReset is falsy
+    /// (the default behavior). false by default. Available since driver version 2.12
+    </span><span class="kw">fn </span>force_app_launch(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
+        <span class="self">self</span>.set_bool(<span class="string">&quot;appium:forceAppLaunch&quot;</span>, value)
+    }
+
+    <span class="doccomment">/// Whether to launch the application under test automatically after a test starts.
+    ///
+    /// Default: true
+    </span><span class="kw">fn </span>auto_launch(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
+        <span class="self">self</span>.set_bool(<span class="string">&quot;appium:autoLaunch&quot;</span>, value)
+    }
+
+    <span class="doccomment">/// Set an optional intent category to be applied when starting the given appActivity by Activity Manager.
+    ///
+    /// Defaults to `android.intent.category.LAUNCHER`.
+    /// Please use `mobile:startActivity` in case you don&#39;t set an explicit value.
+    </span><span class="kw">fn </span>intent_category(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:intentCategory&quot;</span>, value);
+    }
+
+    <span class="doccomment">/// Set an optional intent action to be applied when starting the given appActivity by Activity Manager.
+    ///
+    /// Defaults to `android.intent.action.MAIN`. Please use `mobile:startActivity` in case you don&#39;t set an explicit value.
+    </span><span class="kw">fn </span>intent_action(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:intentAction&quot;</span>, value);
+    }
+
+    <span class="doccomment">/// Set an optional intent flags to be applied when starting the given appActivity by Activity Manager.
+    ///
+    /// Defaults to 0x10200000 (FLAG_ACTIVITY_NEW_TASK)
+    </span><span class="kw">fn </span>intent_flags(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:intentFlags&quot;</span>, value);
+    }
+
+    <span class="doccomment">/// Set an optional intent arguments to be applied when starting the given appActivity by Activity Manager
+    </span><span class="kw">fn </span>optional_intent_arguments(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:optionalIntentArguments&quot;</span>, value);
+    }
+
+    <span class="doccomment">/// Set it to true if you don&#39;t want the application to be restarted if it was already running.
+    ///
+    /// If appium:noReset is falsy, then the app under test is going to be restarted if either
+    /// this capability is falsy (the default behavior) or appium:forceAppLaunch is set to true.
+    ///
+    /// `false` by default
+    </span><span class="kw">fn </span>dont_stop_app_on_reset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
+        <span class="self">self</span>.set_bool(<span class="string">&quot;appium:dontStopAppOnReset&quot;</span>, value);
+    }
+
+    <span class="doccomment">/// Allows to set one or more comma-separated package identifiers to be uninstalled from the device before a test starts.
+    </span><span class="kw">fn </span>uninstall_other_packages(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:uninstallOtherPackages&quot;</span>, value);
+    }
+
+    <span class="doccomment">/// Sets the maximum amount of application packages to be cached on the device under test.
+    ///
+    /// This is needed for devices that don&#39;t support streamed installs (Android 7 and below),
+    /// because ADB must push app packages to the device first in order to install them, which takes some time.
+    ///
+    /// Setting this capability to zero disables apps caching. 10 by default.
+    </span><span class="kw">fn </span>remote_apps_cache_limit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: u64) {
+        <span class="self">self</span>.set_number(<span class="string">&quot;appium:remoteAppsCacheLimit&quot;</span>, Number::from(value));
+    }
+
+    <span class="doccomment">/// Use packages built with test flag.
+    ///
+    /// If set to true then it would be possible to use packages built with the test flag
+    /// for the automated testing (literally adds -t flag to the adb install command).
+    ///
+    /// false by default
+    </span><span class="kw">fn </span>allow_test_packages(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
+        <span class="self">self</span>.set_bool(<span class="string">&quot;appium:allowTestPackages&quot;</span>, value);
+    }
+
+    <span class="doccomment">/// Reinstall app (even if it&#39;s a downgrade).
+    ///
+    /// If set to true then the application under test is always reinstalled even if a newer version
+    /// of it already exists on the device under test.
+    /// This capability has no effect if `appium:noReset` is set to true.
+    ///
+    /// `false` by default
+    </span><span class="kw">fn </span>enforce_app_install(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
+        <span class="self">self</span>.set_bool(<span class="string">&quot;appium:enforceAppInstall&quot;</span>, value);
+    }
+}
+
+<span class="doccomment">/// Capabilities for Settings API (&lt;https://appium.io/docs/en/2.1/guides/settings/&gt;).
+</span><span class="kw">pub trait </span>AppiumSettingsCapable: AppiumCapability {
     <span class="kw">fn </span>set_setting(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span>str, value: Value) {
-        <span class="self">self</span>.insert(<span class="macro">format!</span>(<span class="string">&quot;settings[{name}]&quot;</span>), value);
+        <span class="self">self</span>.insert(<span class="macro">format!</span>(<span class="string">&quot;appium:settings[{name}]&quot;</span>), value);
     }
 }
 
-<span class="kw">pub trait </span>XCUITestAppCompatible: AppiumCapability {
-    <span class="kw">fn </span>bundle_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;bundleId&quot;</span>, id);
+<span class="doccomment">/// Capabilities for XCUITest (iOS).
+</span><span class="kw">pub trait </span>XCUITestAppCompatible: AppiumCapability {
+    <span class="doccomment">/// Bundle id of app. Looks like app package (`com.my.app`).
+    </span><span class="kw">fn </span>bundle_id(<span class="kw-2">&amp;mut </span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:bundleId&quot;</span>, id);
     }
 
-    <span class="kw">fn </span>localizable_strings_dir(<span class="kw-2">&amp;mut </span><span class="self">self</span>, dir: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;localizableStringsDir&quot;</span>, dir);
+    <span class="doccomment">/// Where to look for localizable strings. Default en.lproj
+    </span><span class="kw">fn </span>localizable_strings_dir(<span class="kw-2">&amp;mut </span><span class="self">self</span>, dir: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:localizableStringsDir&quot;</span>, dir);
     }
 
-    <span class="kw">fn </span>language(<span class="kw-2">&amp;mut </span><span class="self">self</span>, language: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;language&quot;</span>, language);
+    <span class="doccomment">/// Language to set for the simulator / emulator.
+    ///
+    /// You need to set this manually on physical devices.
+    </span><span class="kw">fn </span>language(<span class="kw-2">&amp;mut </span><span class="self">self</span>, language: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:language&quot;</span>, language);
     }
 
-    <span class="kw">fn </span>locale(<span class="kw-2">&amp;mut </span><span class="self">self</span>, locale: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;locale&quot;</span>, locale);
+    <span class="doccomment">/// Locale to set for the simulator / emulator.
+    ///
+    /// You need to set this manually on physical devices.
+    </span><span class="kw">fn </span>locale(<span class="kw-2">&amp;mut </span><span class="self">self</span>, locale: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:locale&quot;</span>, locale);
     }
 
-    <span class="kw">fn </span>calendar_format(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;calendarFormat&quot;</span>, value);
+    <span class="doccomment">/// Calendar format to set for the iOS Simulator (eg. `gregorian`).
+    </span><span class="kw">fn </span>calendar_format(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:calendarFormat&quot;</span>, value);
     }
 
-    <span class="kw">fn </span>app_push_timeout(<span class="kw-2">&amp;mut </span><span class="self">self</span>, duration: Duration) {
-        <span class="self">self</span>.set_number(<span class="string">&quot;appPushTimeout&quot;</span>, Number::from(duration.as_millis() <span class="kw">as </span>u64));
+    <span class="doccomment">/// Timeout for application upload in millisecond, on real devices
+    </span><span class="kw">fn </span>app_push_timeout(<span class="kw-2">&amp;mut </span><span class="self">self</span>, duration: Duration) {
+        <span class="self">self</span>.set_number(<span class="string">&quot;appium:appPushTimeout&quot;</span>, Number::from(duration.as_millis() <span class="kw">as </span>u64));
     }
 
-    <span class="kw">fn </span>app_install_strategy(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) {
-        <span class="self">self</span>.set_str(<span class="string">&quot;appInstallStrategy&quot;</span>, value);
+    <span class="doccomment">/// Select application installation strategy for real devices.
+    ///
+    /// The following strategies are supported:
+    /// * `serial` (default) - pushes app files to the device in a sequential order; this is the least performant strategy, although the most reliable;
+    /// * `parallel` - pushes app files simultaneously; this is usually the the most performant strategy, but sometimes could not be very stable;
+    /// * `ios-deploy` - tells the driver to use a third-party tool ios-deploy to install the app; obviously the tool must be installed separately first and must be present in PATH before it could be used.
+    </span><span class="kw">fn </span>app_install_strategy(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.set_str(<span class="string">&quot;appium:appInstallStrategy&quot;</span>, value);
     }
 
-    <span class="kw">fn </span>auto_accept_alerts(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
-        <span class="self">self</span>.set_bool(<span class="string">&quot;autoAcceptAlerts&quot;</span>, value);
+    <span class="doccomment">/// Accept all iOS alerts automatically if they pop up.
+    ///
+    /// This includes privacy access permission alerts (e.g., location, contacts, photos). Default is false.
+    </span><span class="kw">fn </span>auto_accept_alerts(<span class="kw-2">&amp;mut </span><span class="self">self</span>, value: bool) {
+        <span class="self">self</span>.set_bool(<span class="string">&quot;appium:autoAcceptAlerts&quot;</span>, value);
     }
 }
 </code></pre></div></section></main></body></html>
