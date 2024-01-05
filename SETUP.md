@@ -691,7 +691,7 @@ To add an action to this sequence, we use `then`. We will create a sequence of t
 * `PointerAction::MoveTo` to swipe the finger (that is still touching the screen).
 
 ```text
-    let swipe_down = TouchActions::new("finger".to_string())
+    let swipe_up = TouchActions::new("finger".to_string())
         // position the finger first
         .then(PointerAction::MoveTo {
             duration: Some(Duration::from_millis(0)),
@@ -718,7 +718,7 @@ You can adjust `x` and `y` of the sequence depending on the screen of your virtu
 
 To perform those actions, you need to submit them to Appium.
 ```text
-    client.perform_actions(swipe_down)
+    client.perform_actions(swipe_up)
         .await?;
 ```
 
@@ -773,7 +773,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     client.back().await?;
 
-    let swipe_down = TouchActions::new("finger".to_string())
+    let swipe_up = TouchActions::new("finger".to_string())
         // position the finger first
         .then(PointerAction::MoveTo {
             duration: Some(Duration::from_millis(0)),
@@ -791,7 +791,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             y: 100,
         });
 
-    client.perform_actions(swipe_down)
+    client.perform_actions(swipe_up)
         .await?;
 
     Ok(())
