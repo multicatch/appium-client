@@ -1,4 +1,4 @@
-# appium-client
+# multicatch's appium-client
 
 Rust client for Appium Server, for automated mobile app testing. It is based on [fantoccini](https://github.com/jonhoo/fantoccini).
 
