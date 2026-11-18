@@ -161,7 +161,7 @@ use std::ops::{Deref, DerefMut};
 use std::sync::Arc;
 use fantoccini::error;
 use http::Method;
-use hyper::client::connect;
+use hyper_util::client::legacy::connect;
 use log::error;
 use tokio::spawn;
 use crate::capabilities::android::AndroidCapabilities;
@@ -190,20 +190,21 @@ pub struct ClientBuilder<C, Caps>
 }
 
 #[cfg(feature = "native-tls")]
-impl<Caps> ClientBuilder<hyper_tls::HttpsConnector<hyper::client::HttpConnector>, Caps>
+impl<Caps> ClientBuilder<hyper_tls::HttpsConnector<hyper_util::client::legacy::connect::HttpConnector>, Caps>
     where Caps: AppiumCapability
 {
-    pub fn native(capabilities: Caps) -> ClientBuilder<hyper_tls::HttpsConnector<hyper::client::HttpConnector>, Caps> {
+    pub fn native(capabilities: Caps) -> ClientBuilder<hyper_tls::HttpsConnector<hyper_util::client::legacy::connect::HttpConnector>, Caps> {
         ClientBuilder::new(fantoccini::ClientBuilder::native(), capabilities)
     }
 }
 
 #[cfg(feature = "rustls-tls")]
-impl<Caps> ClientBuilder<hyper_rustls::HttpsConnector<hyper::client::HttpConnector>, Caps>
+impl<Caps> ClientBuilder<hyper_rustls::HttpsConnector<hyper_util::client::legacy::connect::HttpConnector>, Caps>
     where Caps: AppiumCapability
 {
-    pub fn rustls(capabilities: Caps) -> ClientBuilder<hyper_rustls::HttpsConnector<hyper::client::HttpConnector>, Caps> {
-        ClientBuilder::new(fantoccini::ClientBuilder::rustls(), capabilities)
+    pub fn rustls(capabilities: Caps) -> std::io::Result<ClientBuilder<hyper_rustls::HttpsConnector<hyper_util::client::legacy::connect::HttpConnector>, Caps>> {
+        let fantoccini_client_builder = fantoccini::ClientBuilder::rustls()?;
+        Ok(ClientBuilder::new(fantoccini_client_builder, capabilities))
     }
 }
 

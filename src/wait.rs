@@ -250,7 +250,7 @@ impl<'a> AppiumWaitOnSelector<Vec<Element>> for WaitOnMultiple<'a> {
 async fn find_element(wait: &Wait<'_>, selector: By) -> Result<Option<Element>, CmdError> {
     match wait.client.find_by(selector).await {
         Ok(element) => Ok(Some(element)),
-        Err(CmdError::NoSuchElement(_)) => Ok(None),
+        Err(err) if err.is_no_such_element() => Ok(None),
         Err(err) => Err(err),
     }
 }
@@ -258,7 +258,7 @@ async fn find_element(wait: &Wait<'_>, selector: By) -> Result<Option<Element>, 
 async fn find_all_elements(wait: &Wait<'_>, selector: By) -> Result<Option<Vec<Element>>, CmdError> {
     match wait.client.find_all_by(selector).await {
         Ok(result) => Ok(Some(result)),
-        Err(CmdError::NoSuchElement(_)) => Ok(None),
+        Err(err) if err.is_no_such_element() => Ok(None),
         Err(err) => Err(err),
     }
 }
